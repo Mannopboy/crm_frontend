@@ -1,0 +1,135 @@
+/* ==========================================================================
+   ADMIN — Filters page (per-manager statistics)
+   ========================================================================== */
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 8px 0;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 28px 0;
+  background: linear-gradient(135deg, var(--c-ink) 0%, var(--c-brand-600) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--c-surface);
+  border-radius: var(--r-xl);
+  padding: 22px;
+  border: 1px solid var(--c-line);
+  box-shadow: var(--sh-sm);
+  transition: all var(--t-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--g-brand);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--sh-md);
+  border-color: var(--c-brand-200);
+}
+
+.managerName {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+  color: var(--c-ink);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.managerName::before {
+  content: "";
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-pill);
+  background: var(--g-brand);
+  flex-shrink: 0;
+  box-shadow: var(--sh-brand-sm);
+}
+
+.filterList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filterItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-line-2);
+  border-radius: var(--r-md);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: all var(--t-fast);
+}
+
+.filterItem:hover {
+  background: var(--c-brand-50);
+  border-color: var(--c-brand-200);
+  transform: translateX(2px);
+}
+
+.filterName {
+  color: var(--c-ink-2);
+}
+
+.filterCount {
+  background: var(--g-brand);
+  color: #fff;
+  border-radius: var(--r-pill);
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: var(--sh-brand-sm);
+  min-width: 28px;
+  text-align: center;
+}
+
+.empty {
+  font-size: 13px;
+  color: var(--c-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 16px 0;
+}
+
+.loading {
+  color: var(--c-brand-600);
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  padding: 60px 20px;
+}

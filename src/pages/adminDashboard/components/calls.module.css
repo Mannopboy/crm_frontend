@@ -1,0 +1,234 @@
+/* ==========================================================================
+   ADMIN — Calls & UserCalls pages
+   ========================================================================== */
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 8px 0;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, var(--c-ink) 0%, var(--c-brand-600) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--c-muted);
+  font-size: 14px;
+  margin: 0 0 24px;
+}
+
+.backBtn {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  color: var(--c-brand-600);
+  cursor: pointer;
+  margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: var(--r-md);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--t-base);
+}
+
+.backBtn:hover {
+  background: var(--c-brand-50);
+  border-color: var(--c-brand-300);
+  transform: translateX(-2px);
+}
+
+.tableWrapper {
+  background: var(--c-surface);
+  border-radius: var(--r-xl);
+  padding: 0;
+  box-shadow: var(--sh-sm);
+  border: 1px solid var(--c-line);
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  background: var(--c-surface-2);
+}
+
+.table th,
+.table td {
+  padding: 14px 20px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid var(--c-line-2);
+}
+
+.table th {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.table td {
+  color: var(--c-ink);
+}
+
+.table tbody tr {
+  transition: background var(--t-fast);
+}
+.table tbody tr:hover {
+  background: var(--c-brand-50);
+}
+.table tbody tr:last-child td { border-bottom: none; }
+
+.viewButton {
+  padding: 8px 14px;
+  border-radius: var(--r-md);
+  border: none;
+  cursor: pointer;
+  background: var(--g-brand);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all var(--t-base);
+  box-shadow: var(--sh-brand-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.viewButton:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--sh-brand);
+}
+
+.centerText {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--c-muted);
+  font-size: 14px;
+}
+
+.phoneLink {
+  color: var(--c-brand-600);
+  font-weight: 600;
+  font-family: var(--font-mono);
+  text-decoration: none;
+  transition: color var(--t-fast);
+}
+
+.phoneLink:hover {
+  color: var(--c-brand-500);
+  text-decoration: underline;
+}
+
+/* — Status flow (call timeline) — */
+.statusFlow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+/* Bitta qo'ng'iroq bloki — status + sana/vaqt + audio ustma-ust */
+.callItem {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.statusBox {
+  background: var(--g-brand);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: var(--sh-brand-sm);
+  letter-spacing: 0.01em;
+}
+
+/* Qo'ng'iroq qachon qilingani */
+.callMeta {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-muted);
+  white-space: nowrap;
+}
+
+/* Keyinga qoldirilgan (rejalashtirilgan) sana */
+.callMetaNext {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--c-warning);
+  white-space: nowrap;
+}
+
+.statusBadge {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  font-weight: 700;
+  color: #fff;
+}
+.statusDone { background-color: var(--c-success); }
+.statusProcess { background-color: var(--c-warning); }
+
+.arrow {
+  font-size: 16px;
+  color: var(--c-muted);
+  font-weight: 700;
+}
+
+.audioPlayer {
+  width: 240px;
+  height: 36px;
+  border-radius: var(--r-pill);
+  background: var(--c-surface-2);
+}
+
+.audioPlayer::-webkit-media-controls-panel {
+  background-color: var(--c-surface-2);
+}
+
+/* — Cards grid (legacy) — */
+.leadsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.leadCard {
+  background: var(--c-surface);
+  border-radius: var(--r-lg);
+  padding: 14px;
+  border: 1px solid var(--c-line);
+  box-shadow: var(--sh-xs);
+  font-size: 13px;
+  transition: all var(--t-base);
+}
+
+.leadCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sh-md);
+}

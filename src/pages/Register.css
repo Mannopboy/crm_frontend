@@ -1,0 +1,306 @@
+/* ==========================================================================
+   REGISTER — Premium two-column layout
+   ========================================================================== */
+
+.register-page {
+  min-height: 100vh;
+  padding: 40px;
+  display: grid;
+  place-items: center;
+  background: var(--c-bg);
+  background-image:
+    radial-gradient(900px 600px at 0% 0%, rgba(91, 59, 255, 0.12), transparent 60%),
+    radial-gradient(800px 600px at 100% 100%, rgba(255, 93, 143, 0.10), transparent 60%);
+}
+
+.register-card {
+  background: var(--c-surface);
+  padding: 42px 44px;
+  border-radius: var(--r-2xl);
+  box-shadow: var(--sh-lg);
+  width: 100%;
+  max-width: 640px;
+  border: 1px solid var(--c-line);
+  animation: slideUp 0.55s var(--t-spring);
+  position: relative;
+}
+
+.register-card .reg-head {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.register-card .reg-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--g-brand);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 16px;
+  box-shadow: var(--sh-brand-sm);
+}
+
+.register-card h2 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+  margin: 0 0 6px;
+}
+
+.register-card .reg-sub {
+  color: var(--c-muted);
+  font-size: 14px;
+  margin: 0;
+}
+
+.register-card form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 16px;
+}
+
+.register-card .full {
+  grid-column: 1 / -1;
+}
+
+.register-card .reg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.register-card .reg-field label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-ink-2);
+  letter-spacing: 0.01em;
+}
+
+.register-card .reg-field .input-wrap {
+  position: relative;
+}
+
+.register-card .reg-field .input-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: var(--c-muted);
+  pointer-events: none;
+}
+
+.register-card input,
+.register-card select {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  border: 1.5px solid var(--c-line);
+  border-radius: var(--r-md);
+  background: var(--c-surface-2);
+  font-family: inherit;
+  font-size: 14.5px;
+  color: var(--c-ink);
+  transition: all var(--t-base);
+}
+
+.register-card select {
+  cursor: pointer;
+  appearance: none;
+}
+
+.register-card input:focus,
+.register-card select:focus {
+  outline: none;
+  border-color: var(--c-brand-500);
+  background: var(--c-surface);
+  box-shadow: 0 0 0 4px rgba(91, 59, 255, 0.12);
+}
+
+.register-card .reg-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.register-card button[type="submit"] {
+  flex: 1;
+  background: var(--g-brand);
+  color: white;
+  border: none;
+  padding: 14px 18px;
+  border-radius: var(--r-md);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--t-base);
+  box-shadow: var(--sh-brand-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.register-card button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-brand);
+}
+
+.register-card button[type="submit"]:disabled {
+  background: var(--c-line);
+  color: var(--c-muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.register-card .back-btn {
+  background: var(--c-surface-2);
+  color: var(--c-ink-3);
+  border: 1px solid var(--c-line);
+  padding: 13px 18px;
+  border-radius: var(--r-md);
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--t-base);
+  width: auto;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.register-card .back-btn:hover {
+  background: var(--c-line-2);
+  color: var(--c-ink);
+}
+
+@media (max-width: 640px) {
+  .register-page { padding: 16px; }
+  .register-card { padding: 28px 22px; }
+  .register-card form { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   YANGI TIZIM QO‘SHISH — modal
+   ========================================================================== */
+.sys-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 18, 34, 0.55);
+  backdrop-filter: blur(3px);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+  padding: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+.sys-modal {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-xl, 18px);
+  box-shadow: var(--sh-lg);
+  width: 100%;
+  max-width: 440px;
+  padding: 26px 26px 22px;
+  animation: slideUp 0.35s var(--t-spring);
+}
+
+.sys-modal__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 18px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--c-ink);
+}
+
+.sys-field { margin-bottom: 14px; }
+
+.sys-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--c-ink-3);
+}
+
+.sys-field input[type="text"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  background: var(--c-surface-2);
+  color: var(--c-ink);
+  font-size: 14.5px;
+  transition: all var(--t-base);
+}
+
+.sys-field input[type="text"]:focus {
+  outline: none;
+  border-color: var(--c-brand, #5b3bff);
+  background: var(--c-surface);
+}
+
+.sys-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 6px 0 4px;
+}
+
+.sys-check {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-ink-2, var(--c-ink));
+  cursor: pointer;
+}
+
+.sys-check input { width: 17px; height: 17px; cursor: pointer; }
+
+.sys-error {
+  color: #e53935;
+  font-size: 13.5px;
+  margin: 12px 0 0;
+}
+
+.sys-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.sys-btn-cancel,
+.sys-btn-save {
+  padding: 11px 20px;
+  border-radius: var(--r-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--t-base);
+}
+
+.sys-btn-cancel {
+  background: var(--c-surface-2);
+  color: var(--c-ink-3);
+  border-color: var(--c-line);
+}
+
+.sys-btn-cancel:hover { background: var(--c-line-2); color: var(--c-ink); }
+
+.sys-btn-save {
+  background: var(--g-brand, #5b3bff);
+  color: #fff;
+}
+
+.sys-btn-save:disabled { opacity: 0.6; cursor: not-allowed; }

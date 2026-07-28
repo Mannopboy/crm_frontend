@@ -1,0 +1,116 @@
+/* ==========================================================================
+   LEGACY AdminDashboard (recharts stats) — premium refresh
+   ========================================================================== */
+
+.admin-dashboard {
+  padding: 32px;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--c-ink);
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-header .title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0;
+  text-align: left;
+  background: linear-gradient(135deg, var(--c-ink) 0%, var(--c-brand-600) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.admin-header .top-btn {
+  background: var(--g-brand);
+  color: white;
+  border: none;
+  padding: 11px 18px;
+  border-radius: var(--r-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--sh-brand-sm);
+  transition: all var(--t-base);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-header .top-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-brand);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 20px;
+}
+
+.user-card {
+  background: var(--c-surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-sm);
+  padding: 22px;
+  border: 1px solid var(--c-line);
+  transition: all var(--t-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.user-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--g-brand);
+}
+
+.user-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sh-md);
+}
+
+.user-card h2 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--c-ink);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.user-card p {
+  color: var(--c-ink-3);
+  font-size: 13.5px;
+  margin: 4px 0;
+}
+
+.user-card p b {
+  color: var(--c-brand-600);
+  font-weight: 700;
+}
+
+.chart-container {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--c-line);
+}
+
+.no-data {
+  color: var(--c-muted);
+  font-style: italic;
+  font-size: 13px;
+  padding: 14px 0;
+}

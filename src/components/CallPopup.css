@@ -1,0 +1,115 @@
+.call-popup {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 320px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+    border: 1px solid #e6e6ef;
+    overflow: hidden;
+    z-index: 9999;
+    animation: call-popup-in 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+@keyframes call-popup-in {
+    from { transform: translateY(30px) scale(0.95); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.call-popup__pulse {
+    height: 4px;
+    background: linear-gradient(90deg, #22c55e, #16a34a, #22c55e);
+    background-size: 200% 100%;
+    animation: call-popup-pulse 1.5s linear infinite;
+}
+
+@keyframes call-popup-pulse {
+    from { background-position: 0 0; }
+    to { background-position: 200% 0; }
+}
+
+.call-popup__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px 8px;
+}
+
+.call-popup__ring {
+    font-size: 20px;
+    animation: call-popup-shake 0.8s ease-in-out infinite;
+    display: inline-block;
+}
+
+@keyframes call-popup-shake {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-15deg); }
+    75% { transform: rotate(15deg); }
+}
+
+.call-popup__title {
+    font-weight: 700;
+    color: #0f172a;
+    flex: 1;
+    font-size: 15px;
+}
+
+.call-popup__close {
+    border: none;
+    background: #f1f5f9;
+    color: #64748b;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    transition: background 0.15s;
+}
+
+.call-popup__close:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+.call-popup__body {
+    padding: 4px 16px 18px;
+}
+
+.call-popup__phone {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.call-popup__lead {
+    display: inline-block;
+    background: #dcfce7;
+    color: #166534;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.call-popup__new {
+    display: inline-block;
+    background: #fef9c3;
+    color: #854d0e;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.call-popup__meta {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+    color: #64748b;
+}

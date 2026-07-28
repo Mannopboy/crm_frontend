@@ -1,0 +1,31 @@
+.period-filter {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--c-surface-2, #f1f5f9);
+    border: 1px solid var(--c-line, #e2e8f0);
+    border-radius: 12px;
+}
+
+.period-filter__btn {
+    border: none;
+    background: transparent;
+    padding: 8px 16px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-muted, #64748b);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    font-family: inherit;
+}
+
+.period-filter__btn:hover {
+    color: var(--c-ink, #0f172a);
+}
+
+.period-filter__btn.is-active {
+    background: var(--c-surface, #ffffff);
+    color: var(--c-brand-600, #4f2fe6);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
