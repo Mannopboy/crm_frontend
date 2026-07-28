@@ -1,13 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Bell, UserPlus, LogOut } from "lucide-react";
+import { Search, UserPlus, LogOut } from "lucide-react";
 import { logoutUser } from "../../../api/leadService";
+import NotificationBell from "../../../components/NotificationBell";
+import { isAdmin } from "../../../utils/auth";
+import { disconnectSse } from "../../../api/sseClient";
 import styles from "./topbar.module.css";
 
 export function TopBar() {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
+        disconnectSse(); // SSE kanalini yopamiz
         await logoutUser(); // serverda sessiyani yopadi + localStorage tozalaydi
         navigate("/");
     };
@@ -26,18 +30,18 @@ export function TopBar() {
             </div>
 
             <div className={styles.actions}>
-                <button
-                    className={styles.iconButton}
-                    title="Hodim qo'shish"
-                    onClick={() => navigate("/register")}
-                >
-                    <UserPlus />
-                </button>
+                {/* 🔒 Operator yaratish faqat adminda — backend ham 403 qaytaradi */}
+                {isAdmin() && (
+                    <button
+                        className={styles.iconButton}
+                        title="Hodim qo'shish"
+                        onClick={() => navigate("/register")}
+                    >
+                        <UserPlus />
+                    </button>
+                )}
 
-                <button className={styles.iconButton} title="Bildirishnomalar">
-                    <Bell />
-                    <span className={styles.notificationDot}></span>
-                </button>
+                <NotificationBell />
 
                 <button
                     className={styles.iconButton}

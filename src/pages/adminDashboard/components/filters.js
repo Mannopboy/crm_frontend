@@ -9,7 +9,6 @@ export default function FiltersPage() {
     useEffect(() => {
         async function loadData() {
             const res = await getUserStatistics();
-            console.log("users_statistics:", res);
 
             if (Array.isArray(res)) {
                 setFiltersData(res);

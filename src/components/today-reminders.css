@@ -1,0 +1,126 @@
+.today-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+    margin: 0 16px 14px;
+    overflow: hidden;
+}
+
+.today-card__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+}
+
+.today-card__title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.today-card__counts {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+}
+
+.today-badge {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.today-badge--overdue {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.today-card__chevron {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.today-card__body {
+    border-top: 1px solid #f1f5f9;
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.today-card__empty {
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    color: #64748b;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.today-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.today-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid #f8fafc;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    flex-wrap: wrap;
+}
+
+.today-item:hover {
+    background: #f8fafc;
+}
+
+.today-item.is-overdue {
+    border-left-color: #dc2626;
+    background: #fff7f7;
+}
+
+.today-item__main {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 13.5px;
+    color: #0f172a;
+}
+
+.today-item__phone {
+    color: #64748b;
+    font-size: 12.5px;
+}
+
+.today-item__meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #475569;
+}
+
+.today-item__filter {
+    background: #f1f5f9;
+    border-radius: 999px;
+    padding: 2px 9px;
+}
+
+.today-item.is-overdue .today-item__time {
+    color: #dc2626;
+    font-weight: 700;
+}

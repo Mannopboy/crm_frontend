@@ -1,0 +1,311 @@
+/* 🤖 AI qo'ng'iroq tahlili — umumiy uslublar */
+
+.ai-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fff;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.ai-card__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+}
+
+.ai-card__head:hover {
+    background: #f8fafc;
+}
+
+.ai-card__info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.ai-card__title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.ai-card__date {
+    font-size: 11.5px;
+    color: #94a3b8;
+}
+
+.ai-card__chevron {
+    color: #94a3b8;
+}
+
+.ai-card__body {
+    padding: 12px;
+    border-top: 1px solid #f1f5f9;
+}
+
+/* Ball doirasi: ≥80 yashil · 50–79 sariq · <50 qizil */
+.ai-score {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 42px;
+    padding: 0 8px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    background: #94a3b8;
+    flex-shrink: 0;
+}
+
+.ai-score--good {
+    background: #16a34a;
+}
+
+.ai-score--mid {
+    background: #d97706;
+}
+
+.ai-score--bad {
+    background: #dc2626;
+}
+
+.ai-score--none {
+    background: #94a3b8;
+}
+
+.ai-score--big {
+    min-width: 92px;
+    height: 92px;
+    border-radius: 20px;
+    font-size: 34px;
+}
+
+.ai-tag {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 3px 9px;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.ai-tag--hot {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.ai-tag--warm {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.ai-tag--cold {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.ai-criteria__row {
+    margin-bottom: 10px;
+}
+
+.ai-criteria__head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: #334155;
+    margin-bottom: 4px;
+}
+
+.ai-criteria__track {
+    height: 8px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    overflow: hidden;
+}
+
+.ai-criteria__bar {
+    height: 100%;
+    border-radius: 999px;
+    background: #94a3b8;
+    transition: width 0.4s ease;
+}
+
+.ai-summary,
+.ai-reco {
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.5;
+    margin: 10px 0 0;
+}
+
+.ai-reco {
+    background: #f0f9ff;
+    border-left: 3px solid #0284c7;
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+
+.ai-list {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: #334155;
+}
+
+.ai-list ul {
+    margin: 4px 0 0;
+    padding-left: 20px;
+}
+
+.ai-list--good strong {
+    color: #16a34a;
+}
+
+.ai-list--bad strong {
+    color: #d97706;
+}
+
+.ai-note {
+    font-size: 13px;
+    color: #64748b;
+    font-style: italic;
+    margin: 0;
+}
+
+.ai-note--error {
+    background: #fff7f7;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 10px;
+    color: #b91c1c;
+    font-style: normal;
+}
+
+.ai-error-text {
+    font-size: 12px;
+    color: #7f1d1d;
+    margin: 4px 0 8px;
+    word-break: break-word;
+}
+
+.ai-btn {
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #0f172a;
+    cursor: pointer;
+}
+
+.ai-btn:hover:not(:disabled) {
+    background: #f1f5f9;
+}
+
+.ai-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.ai-btn--ghost {
+    border-color: transparent;
+    color: #2563eb;
+    padding-left: 0;
+}
+
+.ai-transcript {
+    margin-top: 10px;
+}
+
+.ai-transcript__text {
+    margin: 8px 0 0;
+    padding: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: #334155;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.ai-audio {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Admin AI sahifasi */
+.ai-hero {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.ai-hero__label {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.ai-hero__value {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.ai-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.ai-tab {
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+}
+
+.ai-tab.is-active {
+    background: #0f172a;
+    border-color: #0f172a;
+    color: #fff;
+}
+
+.ai-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ai-chip {
+    background: #f1f5f9;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12.5px;
+    color: #334155;
+}
+
+.ai-chip strong {
+    color: #0f172a;
+}

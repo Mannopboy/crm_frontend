@@ -378,6 +378,25 @@
   color: #991b1b;
   border-color: #fca5a5;
 }
+.lead-actions .btn-history {
+  padding: 6px 8px;
+}
+.lead-actions .btn-history:hover {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+/* Raqam bazada bor — qaysi operatorda ekani */
+.lead-duplicate {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fff4f4;
+  border: 1px solid #ffb3b3;
+  font-size: 0.9em;
+  color: #a30000;
+}
 
 /* — Trash floating button — */
 .trash-icon {

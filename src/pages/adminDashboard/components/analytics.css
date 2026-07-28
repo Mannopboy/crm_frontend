@@ -7,6 +7,13 @@
     margin-bottom: 24px;
 }
 
+.analytics-toolbar__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 .analytics-chart-card {
     background: var(--c-surface, #fff);
     border: 1px solid var(--c-line, #e2e8f0);
@@ -81,4 +88,198 @@
     color: var(--c-muted, #64748b);
     font-weight: 500;
     margin-bottom: 2px;
+}
+
+/* ──────── Audit jurnali filtrlari ──────── */
+.audit-filters {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.audit-filters label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.audit-filters select {
+    min-width: 200px;
+    padding: 9px 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    color: #0f172a;
+}
+
+/* ──────── SLA ──────── */
+.sla-config {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.sla-config label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.sla-config input {
+    width: 140px;
+    padding: 9px 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+}
+
+.sla-config__hint {
+    font-size: 12.5px;
+    color: #94a3b8;
+    padding-bottom: 10px;
+}
+
+.sla-late {
+    background: #fef2f2;
+    color: #dc2626;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 12.5px;
+    white-space: nowrap;
+}
+
+.sla-widget {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    border-radius: 14px;
+    border: 1px solid #fecaca;
+    background: #fff7f7;
+    color: #7f1d1d;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s ease;
+}
+
+.sla-widget:hover {
+    background: #fef2f2;
+}
+
+.sla-widget.is-ok {
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+    color: #166534;
+}
+
+.sla-widget__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.sla-widget__text {
+    flex: 1;
+}
+
+.sla-widget__link {
+    font-weight: 700;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+/* ──────── Lead import ──────── */
+.import-drop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 34px 20px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 14px;
+    background: #f8fafc;
+    color: #475569;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.import-drop:hover,
+.import-drop.is-over {
+    border-color: #6366f1;
+    background: #eef2ff;
+}
+
+.import-drop strong {
+    font-size: 14.5px;
+    color: #0f172a;
+}
+
+.import-drop span {
+    font-size: 12.5px;
+    color: #64748b;
+}
+
+.import-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 18px;
+    font-size: 13.5px;
+    color: #334155;
+}
+
+.import-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.import-options select {
+    max-width: 300px;
+    padding: 9px 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+}
+
+.import-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.import-hint {
+    margin-top: 16px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #64748b;
+}
+
+.import-hint code {
+    background: #f1f5f9;
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 12px;
 }

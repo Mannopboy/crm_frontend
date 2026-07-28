@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserPlus, User, AtSign, Lock, Phone, Send, Hash, ArrowLeft, CheckCircle2, Server } from "lucide-react";
 import { getSystems, registerOperator, createSystem } from "../api/leadService";
+import { toast, errorMessage } from "../utils/toast";
 import "./Register.css";
 
 // Selectda "yangi tizim qo‘shish" uchun maxsus qiymat
@@ -103,15 +104,14 @@ export default function Register() {
             const res = await registerOperator(payload);
 
             if (res?.status) {
-                alert("✅ Hodim muvaffaqiyatli ro‘yxatdan o‘tkazildi!");
+                toast.success("✅ Hodim muvaffaqiyatli ro‘yxatdan o‘tkazildi!");
                 navigate("/admin");
             } else {
-                // masalan: "Username is already exists"
-                alert(`⚠️ ${res?.message || "Xatolik yuz berdi"}`);
+                // masalan: "Username is already exists" yoki 403 (faqat admin)
+                toast.error(res?.message || "Xatolik yuz berdi");
             }
         } catch (err) {
-            console.error("❌ Ro‘yxatdan o‘tkazishda xato:", err);
-            alert("Xatolik yuz berdi! Ma’lumotlarni tekshirib qayta urinib ko‘ring.");
+            toast.error(errorMessage(err, "Ma’lumotlarni tekshirib qayta urinib ko‘ring"));
         } finally {
             setLoading(false);
         }

@@ -1,5 +1,11 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Navigate,
+    useLocation,
+} from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
@@ -17,29 +23,66 @@ import OperatorsManage from "./pages/adminDashboard/components/OperatorsManage"
 import SystemsManage from "./pages/adminDashboard/components/SystemsManage"
 import SourcesManage from "./pages/adminDashboard/components/SourcesManage"
 import ContractsByOperator from "./pages/adminDashboard/components/ContractsByOperator"
+import AuditLog from "./pages/adminDashboard/components/AuditLog"
+import SlaBreaches from "./pages/adminDashboard/components/SlaBreaches"
+import ImportLeads from "./pages/adminDashboard/components/ImportLeads"
+import AiAnalytics from "./pages/adminDashboard/components/AiAnalytics"
+import ToastHost from "./components/ToastHost";
+import { connectSse, disconnectSse } from "./api/sseClient";
+import { isAdmin, isAuthenticated } from "./utils/auth";
+
+// role="admin"     — faqat admin (manager) kiradi
+// role="operator"  — faqat operator kiradi (admin o'z paneliga yo'naltiriladi)
 function PrivateRoute({ children, role }) {
-    const token = localStorage.getItem("token");
-    const userRole = localStorage.getItem("role");
+    if (!isAuthenticated()) return <Navigate to="/" replace />;
 
-    if (!token) return <Navigate to="/" />;
+    // ⚠️ Ilgari bu yerda <Navigate to="/admin" /> edi — operator /admin ga kirsa
+    // cheksiz redirect halqasi hosil bo'lardi.
+    if (role === "admin" && !isAdmin()) return <Navigate to="/dashboard" replace />;
 
-    if (role === "admin" && userRole !== "manager") return <Navigate to="/admin" />;
+    // Admin operator panelini ochmasin (rol tekshiruvi yo'q edi)
+    if (role === "operator" && isAdmin()) return <Navigate to="/admin" replace />;
 
     return children;
+}
+
+// SSE kanalini login/logout holatiga qarab ochib-yopadi.
+function RealtimeBridge() {
+    const location = useLocation();
+
+    useEffect(() => {
+        if (isAuthenticated()) connectSse();
+        else disconnectSse();
+    }, [location.pathname]);
+
+    useEffect(() => () => disconnectSse(), []);
+
+    return null;
 }
 
 export default function App() {
     return (
         <Router>
+            <RealtimeBridge />
+            <ToastHost />
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
+
+                {/* 🔒 Operator yaratish — faqat admin (backend ham 403 qaytaradi) */}
+                <Route
+                    path="/register"
+                    element={
+                        <PrivateRoute role="admin">
+                            <Register />
+                        </PrivateRoute>
+                    }
+                />
 
                 <Route
                     path="/dashboard"
                     element={
-                        <PrivateRoute>
+                        <PrivateRoute role="operator">
                             <Dashboard />
                         </PrivateRoute>
                     }
@@ -67,7 +110,14 @@ export default function App() {
                     <Route path="operators-manage" element={<OperatorsManage />} />
                     <Route path="systems" element={<SystemsManage />} />
                     <Route path="sources-manage" element={<SourcesManage />} />
+                    <Route path="audit" element={<AuditLog />} />
+                    <Route path="sla" element={<SlaBreaches />} />
+                    <Route path="import" element={<ImportLeads />} />
+                    <Route path="ai" element={<AiAnalytics />} />
                 </Route>
+
+                {/* Noma'lum manzil — rolga mos bosh sahifaga */}
+                <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </Router>
     );

@@ -137,6 +137,12 @@
     cursor: not-allowed;
 }
 
+.op-modal--wide {
+    max-width: 820px;
+    max-height: 86vh;
+    overflow-y: auto;
+}
+
 @media (max-width: 560px) {
     .op-grid { grid-template-columns: 1fr; }
 }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { MapPin, Plus } from "lucide-react";
-import { getSources, createSource } from "../../../api/leadService";
+import { getSources } from "../../../api/leadService";
+import { createSourceStrict } from "../../../api/adminService";
+import { toast } from "../../../utils/toast";
 import styles from "../styles.module.css";
 import "./analytics.css";
 import "./operators-manage.css";
@@ -40,15 +42,17 @@ export default function SourcesManage() {
         setSaving(true);
         setFormError("");
 
-        const res = await createSource(value);
+        // 201 = yaratildi · 409 = bunday manba allaqachon bor
+        const res = await createSourceStrict(value);
         setSaving(false);
 
         if (res?.status) {
             setOpen(false);
             setName("");
+            toast.success(`✅ "${value}" manbasi qo‘shildi`);
             await loadSources();
         } else {
-            setFormError(res?.message || "Xatolik yuz berdi (backend endpointi qo‘shilganmi?)");
+            setFormError(res?.message || "Xatolik yuz berdi");
         }
     };
 

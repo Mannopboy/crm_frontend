@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { loginUser } from "../api/leadService";
 import { useNavigate } from "react-router-dom";
+import { ADMIN_ROLES } from "../utils/auth";
+import { connectSse } from "../api/sseClient";
 import {
     Mail, Lock, Eye, EyeOff, LogIn, AlertCircle, Phone,
     Zap, ShieldCheck, BarChart3
@@ -23,14 +25,10 @@ export default function Login() {
             const res = await loginUser(username, password);
 
             if (res.success) {
+                // Backend "manager", hujjatlar "admin" deydi — ikkalasi ham admin
                 const role = (res.role || "").toLowerCase();
-                if (role === "manager") {
-                    navigate("/admin");
-                } else if (role === "operator") {
-                    navigate("/dashboard");
-                } else {
-                    navigate("/dashboard");
-                }
+                connectSse(); // real-time kanalni darhol ochamiz
+                navigate(ADMIN_ROLES.includes(role) ? "/admin" : "/dashboard");
             } else {
                 setError("Login yoki parol noto‘g‘ri");
             }

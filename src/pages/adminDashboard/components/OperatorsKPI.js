@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAdminOperators } from "../../../api/leadService";
 import PeriodFilter from "./PeriodFilter";
+import ExportButton from "../../../components/ExportButton";
 import styles from "../styles.module.css";
 import "./analytics.css";
 
@@ -37,7 +38,10 @@ export default function OperatorsKPI() {
                     <h1 className={styles.title}>Operatorlar KPI</h1>
                     <p className={styles.subtitle}>Operatorlar samaradorligi (lead, shartnoma, qo‘ng‘iroq)</p>
                 </div>
-                <PeriodFilter value={period} onChange={setPeriod} />
+                <div className="analytics-toolbar__actions">
+                    <PeriodFilter value={period} onChange={setPeriod} />
+                    <ExportButton type="operators" period={period} />
+                </div>
             </div>
 
             <div className={styles.tableCard}>

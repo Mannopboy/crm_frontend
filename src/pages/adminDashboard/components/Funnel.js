@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAdminFunnel } from "../../../api/leadService";
 import PeriodFilter from "./PeriodFilter";
+import ExportButton from "../../../components/ExportButton";
 import styles from "../styles.module.css";
 import "./analytics.css";
 
@@ -32,7 +33,10 @@ export default function Funnel() {
                     <h1 className={styles.title}>Konversiya voronkasi</h1>
                     <p className={styles.subtitle}>Lead qaysi bosqichlardan o‘tib shartnomaga aylanmoqda</p>
                 </div>
-                <PeriodFilter value={period} onChange={setPeriod} />
+                <div className="analytics-toolbar__actions">
+                    <PeriodFilter value={period} onChange={setPeriod} />
+                    <ExportButton type="funnel" period={period} />
+                </div>
             </div>
 
             {loading ? (

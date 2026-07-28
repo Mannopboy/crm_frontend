@@ -5,6 +5,7 @@ import {
 import { PhoneIncoming, PhoneOutgoing, PhoneMissed } from "lucide-react";
 import { getAdminCalls } from "../../../api/leadService";
 import PeriodFilter from "./PeriodFilter";
+import ExportButton from "../../../components/ExportButton";
 import styles from "../styles.module.css";
 import "./analytics.css";
 
@@ -41,7 +42,10 @@ export default function CallsAnalytics() {
                     <h1 className={styles.title}>Qo‘ng‘iroq tahlili</h1>
                     <p className={styles.subtitle}>Kiruvchi / chiquvchi / javobsiz qo‘ng‘iroqlar</p>
                 </div>
-                <PeriodFilter value={period} onChange={setPeriod} />
+                <div className="analytics-toolbar__actions">
+                    <PeriodFilter value={period} onChange={setPeriod} />
+                    <ExportButton type="calls" period={period} />
+                </div>
             </div>
 
             {loading ? (

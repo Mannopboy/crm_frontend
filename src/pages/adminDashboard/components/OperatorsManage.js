@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserPlus, Pencil } from "lucide-react";
 import { getUsers, getUser, updateUser, getSystems } from "../../../api/leadService";
+import { toast } from "../../../utils/toast";
 import styles from "../styles.module.css";
 import "./analytics.css";
 import "./operators-manage.css";
@@ -26,6 +27,9 @@ export default function OperatorsManage() {
 
     const [editing, setEditing] = useState(false);
     const [form, setForm] = useState(EMPTY_FORM);
+    // PUT /user endi partial — faqat o'zgargan maydonlarni yuborish uchun
+    // formaning dastlabki holatini saqlab qo'yamiz.
+    const [original, setOriginal] = useState(EMPTY_FORM);
     const [saving, setSaving] = useState(false);
     const [formError, setFormError] = useState("");
 
@@ -47,7 +51,7 @@ export default function OperatorsManage() {
         const res = await getUser(op.id);
         if (res?.status && res.user) {
             const u = res.user;
-            setForm({
+            const loaded = {
                 user_id: u.user_id,
                 name: u.name || "",
                 surname: u.surname || "",
@@ -57,10 +61,12 @@ export default function OperatorsManage() {
                 telegram_username: u.telegram_username || "",
                 atc_username: u.atc_username || "",
                 system_id: u.system_id ?? "",
-            });
+            };
+            setForm(loaded);
+            setOriginal(loaded);
             setEditing(true);
         } else {
-            alert("⚠️ Operator ma'lumotini olishda xato");
+            toast.error("Operator ma'lumotini olishda xato");
         }
     };
 
@@ -68,38 +74,43 @@ export default function OperatorsManage() {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    // Saqlash: PUT /user — BARCHA maydonlar yuboriladi (to'liq yangilash)
+    // Saqlash: PUT /user — endi PARTIAL, faqat o'zgargan maydonlar yuboriladi.
+    // (Ilgari to'liq obyekt yuborilardi; yuborilmagan maydon backendda null bo'lib
+    //  ketardi — bu bug backendda tuzatildi, FE ham partial'ga o'tdi.)
     const handleSave = async () => {
         setFormError("");
         if (!form.name.trim() || !form.username.trim()) {
             setFormError("Ism va login majburiy");
             return;
         }
-        setSaving(true);
-        const payload = {
-            user_id: form.user_id,
-            name: form.name,
-            surname: form.surname,
-            username: form.username,
-            phone: form.phone,
-            telegram_username: form.telegram_username,
-            atc_username: form.atc_username,
-            system_id: form.system_id ? Number(form.system_id) : null,
-        };
+
+        const payload = { user_id: form.user_id };
+        ["name", "surname", "username", "phone", "telegram_username", "atc_username"].forEach((key) => {
+            if (form[key] !== original[key]) payload[key] = form[key];
+        });
+        if (String(form.system_id) !== String(original.system_id)) {
+            payload.system_id = form.system_id ? Number(form.system_id) : null;
+        }
         // password faqat to'ldirilgan bo'lsa yuboriladi (aks holda eski parol qoladi)
         if (form.password.trim()) payload.password = form.password;
-        else payload.password = "";
 
+        if (Object.keys(payload).length === 1) {
+            setFormError("O‘zgarish yo‘q");
+            return;
+        }
+
+        setSaving(true);
         const res = await updateUser(payload);
         setSaving(false);
 
         if (res?.status) {
             setEditing(false);
             setForm(EMPTY_FORM);
+            setOriginal(EMPTY_FORM);
             await loadOperators();
-            alert("✅ Operator ma'lumoti yangilandi");
+            toast.success("✅ Operator ma'lumoti yangilandi");
         } else {
-            // "User not found" yoki "Username already exists"
+            // "User not found" yoki "Username already exists" yoki 403
             setFormError(res?.message || "Xatolik yuz berdi");
         }
     };

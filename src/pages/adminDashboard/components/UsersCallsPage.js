@@ -15,7 +15,6 @@ export default function UserCallsPage() {
     useEffect(() => {
         async function loadData() {
             const res = await getUserCallLeads(userId);
-            console.log("📌 API RESPONSE:", res);
 
             if (Array.isArray(res.leads)) {
                 setLeads(res.leads);

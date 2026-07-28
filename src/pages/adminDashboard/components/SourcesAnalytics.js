@@ -5,6 +5,7 @@ import {
 } from "recharts";
 import { getAdminSources } from "../../../api/leadService";
 import PeriodFilter from "./PeriodFilter";
+import ExportButton from "../../../components/ExportButton";
 import styles from "../styles.module.css";
 import "./analytics.css";
 
@@ -39,7 +40,10 @@ export default function SourcesAnalytics() {
                     <h1 className={styles.title}>Manba tahlili</h1>
                     <p className={styles.subtitle}>Qaysi manba ko‘p lead va shartnoma keltiryapti</p>
                 </div>
-                <PeriodFilter value={period} onChange={setPeriod} />
+                <div className="analytics-toolbar__actions">
+                    <PeriodFilter value={period} onChange={setPeriod} />
+                    <ExportButton type="sources" period={period} />
+                </div>
             </div>
 
             {loading ? (

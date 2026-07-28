@@ -5,7 +5,10 @@ import {
     getCallStatistics,
     getUserCallLeads,
 } from "../../../api/leadService";
+import PeriodFilter from "./PeriodFilter";
+import ExportButton from "../../../components/ExportButton";
 import styles from "./calls.module.css";
+import "./analytics.css";
 
 // ISO sanani "20.07.2026, 15:00" ko'rinishida
 function fmtDate(value) {
@@ -61,6 +64,7 @@ export default function ContractsByOperator() {
     const [operators, setOperators] = useState([]);
     const [loading, setLoading] = useState(true);
     const [approx, setApprox] = useState(false); // fallback rejimi (taxminiy)
+    const [period, setPeriod] = useState("all");
 
     useEffect(() => {
         let cancelled = false;
@@ -68,7 +72,7 @@ export default function ContractsByOperator() {
             setLoading(true);
 
             // 1) Toza endpoint (backend qo'shsa) — aniq ma'lumot
-            const clean = await getAdminContracts();
+            const clean = await getAdminContracts(period);
             const cleanOps = clean?.operators || clean?.data;
             if (!cancelled && Array.isArray(cleanOps)) {
                 const normalized = cleanOps
@@ -100,16 +104,12 @@ export default function ContractsByOperator() {
         return () => {
             cancelled = true;
         };
-    }, []);
+    }, [period]);
 
     const totalContracts = operators.reduce(
         (sum, o) => sum + (o.contracts?.length || 0),
         0
     );
-
-    if (loading) {
-        return <p className={styles.centerText}>⏳ Yuklanmoqda...</p>;
-    }
 
     return (
         <div className={styles.container}>
@@ -117,7 +117,13 @@ export default function ContractsByOperator() {
                 ← Orqaga
             </button>
 
-            <h2 className={styles.title}>Shartnomalar — operatorlar bo‘yicha</h2>
+            <div className="analytics-toolbar">
+                <h2 className={styles.title}>Shartnomalar — operatorlar bo‘yicha</h2>
+                <div className="analytics-toolbar__actions">
+                    <PeriodFilter value={period} onChange={setPeriod} />
+                    <ExportButton type="contracts" period={period} />
+                </div>
+            </div>
             <p className={styles.subtitle}>
                 Har bir operator alohida — shartnoma qilgan mijozlar (ism va telefon).
                 {approx && (
@@ -151,7 +157,9 @@ export default function ContractsByOperator() {
                 ))}
             </div>
 
-            {operators.length === 0 ? (
+            {loading ? (
+                <p className={styles.centerText}>⏳ Yuklanmoqda...</p>
+            ) : operators.length === 0 ? (
                 <p className={styles.centerText}>🚫 Shartnoma qilgan operatorlar topilmadi</p>
             ) : (
                 operators.map((op) => (

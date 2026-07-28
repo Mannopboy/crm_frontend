@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { getCallEvents } from "../api/leadService";
+import { useSseEvent, useNeedsPollingFallback } from "../hooks/useRealtime";
+import { CALL_POLL_INTERVAL } from "../config";
 import "./CallPopup.css";
-
-// Polling interval (ms) — qo'llanmada 3–5 soniya tavsiya etilgan
-const POLL_INTERVAL = 4000;
 
 // Qo'ng'iroqni "yopadigan" hodisa turlari
 const TERMINAL_TYPES = ["ACCEPTED", "COMPLETED", "CANCELLED"];
@@ -24,55 +23,80 @@ export default function CallPopup() {
     // Operator qo'lda yopgan callid'lar — qayta chiqmasligi uchun
     const dismissedRef = useRef(new Set());
 
-    useEffect(() => {
-        let cancelled = false;
+    // SSE ochiq bo'lsa polling ishlamaydi (ikkalasi birga ishlamasin)
+    const usePolling = useNeedsPollingFallback();
 
-        const poll = async () => {
-            const events = await getCallEvents();
-            if (cancelled || !Array.isArray(events) || events.length === 0) return;
+    // 🔴 Real-time: har bir call_event darhol keladi
+    useSseEvent("call_event", (ev) => {
+        if (!ev) return;
+        const key = ev.callid || ev.id;
+        if (ev.type === "INCOMING") {
+            if (dismissedRef.current.has(key)) return;
+            setActiveCall((current) => current || ev);
+            return;
+        }
+        if (TERMINAL_TYPES.includes(ev.type)) {
+            setActiveCall((current) =>
+                current && (current.callid || current.id) === key ? null : current
+            );
+        }
+    });
 
-            // Har bir callid bo'yicha eng oxirgi hodisani topamiz
-            const latestByCall = new Map();
-            for (const ev of events) {
-                const key = ev.callid || ev.id;
-                const prev = latestByCall.get(key);
-                if (!prev || new Date(ev.created_at) >= new Date(prev.created_at)) {
-                    latestByCall.set(key, ev);
-                }
+    // ⏳ Zaxira (fallback): SSE uzilgan bo'lsa eski polling
+    const poll = useCallback(async () => {
+        const events = await getCallEvents();
+        if (!Array.isArray(events) || events.length === 0) return;
+
+        // Har bir callid bo'yicha eng oxirgi hodisani topamiz
+        const latestByCall = new Map();
+        for (const ev of events) {
+            const key = ev.callid || ev.id;
+            const prev = latestByCall.get(key);
+            if (!prev || new Date(ev.created_at) >= new Date(prev.created_at)) {
+                latestByCall.set(key, ev);
             }
+        }
 
-            // Eng oxirgi holati INCOMING bo'lgan (hali javob berilmagan) qo'ng'iroqlar
-            const ringing = [...latestByCall.values()]
-                .filter((ev) => ev.type === "INCOMING")
-                .filter((ev) => !dismissedRef.current.has(ev.callid))
-                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        // Eng oxirgi holati INCOMING bo'lgan (hali javob berilmagan) qo'ng'iroqlar
+        const ringing = [...latestByCall.values()]
+            .filter((ev) => ev.type === "INCOMING")
+            .filter((ev) => !dismissedRef.current.has(ev.callid))
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-            const candidate = ringing[0] || null;
+        const candidate = ringing[0] || null;
 
-            setActiveCall((current) => {
-                // Joriy ko'rsatilayotgan qo'ng'iroq tugagan bo'lsa — yopamiz
-                if (current) {
-                    const last = latestByCall.get(current.callid);
-                    if (last && TERMINAL_TYPES.includes(last.type)) {
-                        return candidate; // tugadi -> keyingi kiruvchiga o'tamiz (yoki null)
-                    }
-                    // Hali ham jiringlayapti — saqlab qolamiz
-                    if (last && last.type === "INCOMING") return current;
+        setActiveCall((current) => {
+            // Joriy ko'rsatilayotgan qo'ng'iroq tugagan bo'lsa — yopamiz
+            if (current) {
+                const last = latestByCall.get(current.callid);
+                if (last && TERMINAL_TYPES.includes(last.type)) {
+                    return candidate; // tugadi -> keyingi kiruvchiga o'tamiz (yoki null)
                 }
-                return candidate;
-            });
+                // Hali ham jiringlayapti — saqlab qolamiz
+                if (last && last.type === "INCOMING") return current;
+            }
+            return candidate;
+        });
+    }, []);
+
+    useEffect(() => {
+        if (!usePolling) return undefined;
+
+        let cancelled = false;
+        const tick = () => {
+            if (!cancelled) poll();
         };
 
-        poll();
-        const timer = setInterval(poll, POLL_INTERVAL);
+        tick();
+        const timer = setInterval(tick, CALL_POLL_INTERVAL);
         return () => {
             cancelled = true;
             clearInterval(timer);
         };
-    }, []);
+    }, [usePolling, poll]);
 
     const handleClose = () => {
-        if (activeCall?.callid) dismissedRef.current.add(activeCall.callid);
+        if (activeCall) dismissedRef.current.add(activeCall.callid || activeCall.id);
         setActiveCall(null);
     };
 

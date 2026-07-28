@@ -4,7 +4,6 @@ import {
     Users,
     Phone,
     Filter,
-    Settings,
     ChevronRight,
     BarChart3,
     PieChart,
@@ -13,6 +12,11 @@ import {
     UserCog,
     Server,
     MapPin,
+    Bot,
+    ClipboardList,
+    AlertTriangle,
+    Upload,
+    FileText,
 } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import styles from "./sidebar.module.css"
@@ -23,8 +27,13 @@ const menuItems = [
     { icon: PieChart, label: "Manba tahlili", path: "/admin/sources" },
     { icon: BarChart3, label: "Qo'ng'iroq tahlili", path: "/admin/call-analytics" },
     { icon: GitBranch, label: "Voronka", path: "/admin/funnel" },
+    { icon: FileText, label: "Shartnomalar", path: "/admin/contracts" },
+    { icon: Bot, label: "AI tahlil", path: "/admin/ai" },
+    { icon: AlertTriangle, label: "SLA nazorati", path: "/admin/sla" },
     { icon: Phone, label: "Qo'ng'iroqlar", path: "/admin/calls" },
     { icon: Filter, label: "Filtrlar", path: "/admin/filters" },
+    { icon: ClipboardList, label: "Audit jurnali", path: "/admin/audit" },
+    { icon: Upload, label: "Lead import", path: "/admin/import" },
     { icon: UserCog, label: "Operatorlar", path: "/admin/operators-manage" },
     { icon: Server, label: "Tizimlar", path: "/admin/systems" },
     { icon: MapPin, label: "Manbalar", path: "/admin/sources-manage" },
