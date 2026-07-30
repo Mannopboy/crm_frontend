@@ -37,6 +37,47 @@ describe("CallAnalysisCard", () => {
         expect(screen.getByText("Assalomu alaykum...")).toBeInTheDocument();
     });
 
+    it("transcriptOpen bilan transkript darhol ko'rinadi", () => {
+        render(<CallAnalysisCard analysis={ANALYSIS} defaultOpen transcriptOpen />);
+        expect(screen.getByText("Assalomu alaykum...")).toBeInTheDocument();
+    });
+
+    it("transkript bo'sh bo'lsa 'Transkript olinmadi' yozadi", () => {
+        render(<CallAnalysisCard analysis={{ ...ANALYSIS, transcript: null }} defaultOpen />);
+
+        expect(screen.getByText(/Transkript olinmadi/)).toBeInTheDocument();
+        expect(screen.queryByText(/Transkriptni ko/)).not.toBeInTheDocument();
+    });
+
+    it("faqat bo'shliqdan iborat transkript ham 'olinmadi' hisoblanadi", () => {
+        render(<CallAnalysisCard analysis={{ ...ANALYSIS, transcript: "   \n " }} defaultOpen />);
+        expect(screen.getByText(/Transkript olinmadi/)).toBeInTheDocument();
+    });
+
+    it("transcript maydoni javobda bo'lmasa blok umuman chizilmaydi", () => {
+        const { transcript, ...withoutTranscript } = ANALYSIS;
+        render(<CallAnalysisCard analysis={withoutTranscript} defaultOpen />);
+
+        expect(screen.queryByText(/Transkript olinmadi/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Transkriptni ko/)).not.toBeInTheDocument();
+    });
+
+    it("transkript audio player ostida joylashadi", () => {
+        const { container } = render(
+            <CallAnalysisCard
+                analysis={{ ...ANALYSIS, audio_url: "https://example.com/a.mp3" }}
+                defaultOpen
+            />
+        );
+
+        const audio = container.querySelector(".ai-audio");
+        const transcript = container.querySelector(".ai-transcript");
+        expect(audio).toBeTruthy();
+        expect(transcript).toBeTruthy();
+        // DOM tartibi: audio → transkript
+        expect(audio.compareDocumentPosition(transcript)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    });
+
     it("pending holatda 'Tahlil qilinmoqda' yozadi", () => {
         render(<CallAnalysisCard analysis={{ ...ANALYSIS, status: "pending", total_score: null }} defaultOpen />);
         expect(screen.getByText(/Tahlil qilinmoqda/)).toBeInTheDocument();

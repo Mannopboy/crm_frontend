@@ -3,7 +3,7 @@ import {
     getAiOperators,
     getAiLowScores,
     getAiInsights,
-    getCallAnalysis,
+    getAnalysisById,
     scoreClass,
     CRITERIA_LABELS,
 } from "../../../api/aiService";
@@ -31,7 +31,7 @@ export default function AiAnalytics() {
     const [insights, setInsights] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Past ballar jadvalidan tanlangan qo'ng'iroq (transkript alohida yuklanadi)
+    // Past ballar jadvalidan tanlangan qo'ng'iroq (transkript ro'yxat bilan keladi)
     const [selected, setSelected] = useState(null);
     const [selectedLoading, setSelectedLoading] = useState(false);
 
@@ -43,7 +43,8 @@ export default function AiAnalytics() {
                 const res = await getAiOperators(period);
                 if (!cancelled) setOperators(res);
             } else if (tab === "low") {
-                const res = await getAiLowScores({ below, period });
+                // with_transcript=1 → transkript ro'yxatda keladi, modal uchun 2-so'rov kerak emas
+                const res = await getAiLowScores({ below, period, withTranscript: true });
                 if (!cancelled) setLow(res);
             } else {
                 const res = await getAiInsights(period);
@@ -56,12 +57,17 @@ export default function AiAnalytics() {
         };
     }, [tab, period, below]);
 
-    // Transkript low-scores javobida yo'q — alohida chaqiramiz
+    // with_transcript=1 tufayli transkript ro'yxatda keladi — modal uchun 2-so'rov shart emas.
+    // Yetishmasa (audio_url ro'yxat serializerida yo'q yoki eski backend) tahlilni
+    // o'z id'si bilan olamiz: call_id kiruvchi qo'ng'iroq va backfill yozuvlarida null.
     const openAnalysis = async (item) => {
-        setSelectedLoading(true);
         setSelected(item);
-        const full = await getCallAnalysis(item.call_id);
-        setSelected(full || item);
+        if (item.transcript !== undefined && item.audio_url) return;
+
+        setSelectedLoading(true);
+        const full = await getAnalysisById(item.id);
+        // ro'yxatdan kelgan maydonlar yo'qolmasin, to'liq javob ustun turadi
+        setSelected(full ? { ...item, ...full } : { ...item, transcript: item.transcript ?? null });
         setSelectedLoading(false);
     };
 
@@ -211,7 +217,7 @@ export default function AiAnalytics() {
                                                     onClick={() => openAnalysis(a)}
                                                     type="button"
                                                 >
-                                                    Transkript
+                                                    Batafsil
                                                 </button>
                                             </td>
                                         </tr>
@@ -322,6 +328,7 @@ export default function AiAnalytics() {
                             <CallAnalysisCard
                                 analysis={selected}
                                 defaultOpen
+                                transcriptOpen
                                 onChanged={() => setSelected(null)}
                             />
                         )}

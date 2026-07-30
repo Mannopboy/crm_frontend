@@ -19,9 +19,16 @@ function formatDate(iso) {
 
 // 🤖 Bitta qo'ng'iroq tahlili.
 // criteria_max javobda keladi — progress bar shundan quriladi, qo'lda yozilmaydi.
-export default function CallAnalysisCard({ analysis, defaultOpen = false, onChanged }) {
+// transcriptOpen — transkript bloki darhol yoyilgan holda chiqadi (admin modalida
+// transkript audio bilan birga ko'rinib turishi kerak).
+export default function CallAnalysisCard({
+    analysis,
+    defaultOpen = false,
+    transcriptOpen = false,
+    onChanged,
+}) {
     const [open, setOpen] = useState(defaultOpen);
-    const [showTranscript, setShowTranscript] = useState(false);
+    const [showTranscript, setShowTranscript] = useState(transcriptOpen);
     const [busy, setBusy] = useState(false);
 
     if (!analysis) return null;
@@ -32,6 +39,10 @@ export default function CallAnalysisCard({ analysis, defaultOpen = false, onChan
 
     const criteria = analysis.criteria_scores || {};
     const maxes = analysis.criteria_max || {};
+
+    // Whisper jim yozuvda bo'sh matn qaytaradi — bunda "olinmadi" deb yozamiz
+    const hasTranscriptField = analysis.transcript !== undefined;
+    const emptyTranscript = !analysis.transcript || !String(analysis.transcript).trim();
 
     const handleReanalyze = async () => {
         setBusy(true);
@@ -139,23 +150,35 @@ export default function CallAnalysisCard({ analysis, defaultOpen = false, onChan
                                 <p className="ai-reco">💡 {analysis.recommendation}</p>
                             )}
 
-                            {analysis.transcript && (
-                                <div className="ai-transcript">
-                                    <button
-                                        className="ai-btn ai-btn--ghost"
-                                        onClick={() => setShowTranscript((v) => !v)}
-                                        type="button"
-                                    >
-                                        {showTranscript ? "📄 Transkriptni yashirish" : "📄 Transkriptni ko‘rish"}
-                                    </button>
-                                    {showTranscript && <pre className="ai-transcript__text">{analysis.transcript}</pre>}
-                                </div>
-                            )}
-
                             {analysis.audio_url && (
                                 <audio className="ai-audio" controls src={analysis.audio_url}>
                                     Brauzeringiz audio'ni qo‘llab-quvvatlamaydi
                                 </audio>
+                            )}
+
+                            {/* Transkript audio ostida — maydon javobda bo'lsa ko'rsatiladi.
+                                undefined = so'rovda umuman so'ralmagan · null/"" = STT bo'sh qaytargan */}
+                            {hasTranscriptField && (
+                                <div className="ai-transcript">
+                                    {emptyTranscript ? (
+                                        <p className="ai-note">📄 Transkript olinmadi</p>
+                                    ) : (
+                                        <>
+                                            <button
+                                                className="ai-btn ai-btn--ghost"
+                                                onClick={() => setShowTranscript((v) => !v)}
+                                                type="button"
+                                            >
+                                                {showTranscript
+                                                    ? "📄 Transkriptni yashirish"
+                                                    : "📄 Transkriptni ko‘rish"}
+                                            </button>
+                                            {showTranscript && (
+                                                <pre className="ai-transcript__text">{analysis.transcript}</pre>
+                                            )}
+                                        </>
+                                    )}
+                                </div>
                             )}
                         </>
                     )}
