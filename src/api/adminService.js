@@ -102,6 +102,50 @@ export async function downloadImportTemplate(format = "xlsx") {
     }
 }
 
+// ──────────────── ISSIQ / SOVUQ LEADLAR (admin) ────────────────
+
+// 🌡️ GET /admin/lead_temperature?type=issiq|sovuq|all&period=&user_id=
+// Faqat harorati tanlangan leadlar chiqadi (tanlanmaganlar ro'yxatga tushmaydi).
+export async function getAdminLeadTemperature({ type = "all", period = "all", user_id } = {}) {
+    try {
+        const params = { type, period };
+        if (user_id) params.user_id = user_id;
+        const res = await api.get("/admin/lead_temperature", { params });
+        return res.data; // { status, type, period, counts, operators[], leads[] }
+    } catch (error) {
+        console.error("❌ getAdminLeadTemperature xato:", error.response?.data || error.message);
+        return null;
+    }
+}
+
+// ──────────────── SIFATSIZ LEADLAR + LEAD YO'LI (admin) ────────────────
+
+// 🗑️ GET /admin/bad_leads?period=&user_id=&limit=200
+// Har bir qatorda: comment (sabab), operator, bad_at, call_count, temperature, auto
+export async function getAdminBadLeads({ period = "all", user_id, limit = 200 } = {}) {
+    try {
+        const params = { period, limit };
+        if (user_id) params.user_id = user_id;
+        const res = await api.get("/admin/bad_leads", { params });
+        return res.data; // { status, period, total, leads[] }
+    } catch (error) {
+        console.error("❌ getAdminBadLeads xato:", error.response?.data || error.message);
+        return null;
+    }
+}
+
+// 🧭 GET /api/lead_journey/<user_lead_id> — bitta leadning to'liq yo'li (timeline)
+// journey[]: type="status" (bosqich) yoki type="call" (audio + baho bilan)
+export async function getLeadJourney(user_lead_id) {
+    try {
+        const res = await api.get(`/lead_journey/${user_lead_id}`);
+        return res.data; // { status, ..., journey[] }
+    } catch (error) {
+        console.error("❌ getLeadJourney xato:", error.response?.data || error.message);
+        return null;
+    }
+}
+
 // ──────────────── MANBA YARATISH ────────────────
 
 // ➕ POST /sources — 201 yaratildi · 409 bunday manba bor

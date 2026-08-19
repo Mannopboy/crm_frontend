@@ -283,3 +283,173 @@
     padding: 1px 5px;
     font-size: 12px;
 }
+
+/* ──────── Issiq/sovuq + Sifatsiz leadlar ──────── */
+.temp-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #f1f5f9;
+    color: #64748b;
+    white-space: nowrap;
+}
+
+.temp-badge--issiq {
+    background: #fff1f0;
+    color: #c0392b;
+}
+
+.temp-badge--sovuq {
+    background: #eef6ff;
+    color: #1f6fb2;
+}
+
+.bad-auto {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 8px;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+/* ──────── Lead yo'li (timeline) ──────── */
+.journey-summary {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 13px;
+    color: #475569;
+    margin-bottom: 12px;
+}
+
+.journey-reason {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    color: #7c2d12;
+    margin: 0 0 16px;
+}
+
+.journey-timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.journey-item {
+    display: flex;
+    gap: 12px;
+    padding: 0 0 18px 4px;
+    position: relative;
+}
+
+.journey-item::before {
+    content: "";
+    position: absolute;
+    left: 15px;
+    top: 26px;
+    bottom: -4px;
+    width: 2px;
+    background: #e2e8f0;
+}
+
+.journey-item:last-child::before {
+    display: none;
+}
+
+.journey-dot {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #f1f5f9;
+    font-size: 13px;
+    z-index: 1;
+}
+
+.journey-dot--call {
+    background: #eef2ff;
+}
+
+.journey-dot--bad {
+    background: #fee2e2;
+}
+
+.journey-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.journey-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #0f172a;
+}
+
+.journey-from {
+    color: #64748b;
+}
+
+.journey-to-bad {
+    color: #dc2626;
+}
+
+.journey-filter,
+.journey-callstatus,
+.journey-rating,
+.journey-duration {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.journey-rating {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+.journey-meta {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 3px;
+}
+
+.journey-audio {
+    width: 100%;
+    max-width: 420px;
+    height: 34px;
+    margin-top: 8px;
+}
+
+.journey-note {
+    font-size: 12.5px;
+    color: #94a3b8;
+    font-style: italic;
+    margin: 6px 0 0;
+}
+
+.journey-comment {
+    font-size: 13px;
+    color: #334155;
+    margin: 6px 0 0;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 6px 10px;
+}

@@ -17,6 +17,8 @@ import {
     AlertTriangle,
     Upload,
     FileText,
+    Thermometer,
+    Trash2,
 } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import styles from "./sidebar.module.css"
@@ -27,6 +29,8 @@ const menuItems = [
     { icon: PieChart, label: "Manba tahlili", path: "/admin/sources" },
     { icon: BarChart3, label: "Qo'ng'iroq tahlili", path: "/admin/call-analytics" },
     { icon: GitBranch, label: "Voronka", path: "/admin/funnel" },
+    { icon: Thermometer, label: "Issiq/sovuq", path: "/admin/lead-temperature" },
+    { icon: Trash2, label: "Sifatsiz leadlar", path: "/admin/bad-leads" },
     { icon: FileText, label: "Shartnomalar", path: "/admin/contracts" },
     { icon: Bot, label: "AI tahlil", path: "/admin/ai" },
     { icon: AlertTriangle, label: "SLA nazorati", path: "/admin/sla" },

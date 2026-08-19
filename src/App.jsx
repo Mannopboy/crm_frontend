@@ -27,6 +27,8 @@ import AuditLog from "./pages/adminDashboard/components/AuditLog"
 import SlaBreaches from "./pages/adminDashboard/components/SlaBreaches"
 import ImportLeads from "./pages/adminDashboard/components/ImportLeads"
 import AiAnalytics from "./pages/adminDashboard/components/AiAnalytics"
+import LeadTemperature from "./pages/adminDashboard/components/LeadTemperature"
+import BadLeads from "./pages/adminDashboard/components/BadLeads"
 import ToastHost from "./components/ToastHost";
 import { connectSse, disconnectSse } from "./api/sseClient";
 import { isAdmin, isAuthenticated } from "./utils/auth";
@@ -114,6 +116,8 @@ export default function App() {
                     <Route path="sla" element={<SlaBreaches />} />
                     <Route path="import" element={<ImportLeads />} />
                     <Route path="ai" element={<AiAnalytics />} />
+                    <Route path="lead-temperature" element={<LeadTemperature />} />
+                    <Route path="bad-leads" element={<BadLeads />} />
                 </Route>
 
                 {/* Noma'lum manzil — rolga mos bosh sahifaga */}

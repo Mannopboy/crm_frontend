@@ -184,6 +184,19 @@ export async function makeCall(user_lead_id) {
     return res.data;
 }
 
+// 🌡️ ISSIQ / SOVUQ — operator lead haroratini belgilaydi (POST /lead_temperature)
+// temperature: "issiq" | "sovuq" | null (tanlovni bekor qilish — bo'sh option)
+// Faqat "Keladi" / "O'ylab ko'radi" / "Shartnoma qiladi" bosqichlarida ishlaydi.
+export async function setLeadTemperature(user_lead_id, temperature) {
+    try {
+        const res = await api.post("/lead_temperature", { user_lead_id, temperature });
+        return res.data; // { status: true, temperature }
+    } catch (error) {
+        console.error("❌ setLeadTemperature xato:", error.response?.data || error.message);
+        return error.response?.data || { status: false, message: "Xatolik yuz berdi" };
+    }
+}
+
 // ✅ KELDI / KELMADI
 export async function markCome(user_lead_id, status) {
     const res = await api.post("/come", { user_lead_id, status });

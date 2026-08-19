@@ -39,6 +39,7 @@ export default function LeadCardItem({
     onCame,
     onDidNotCome,
     onContract,
+    onTemperature,
 }) {
     const name = (filter?.name || "").toLowerCase();
 
@@ -46,8 +47,12 @@ export default function LeadCardItem({
         name.includes("telefon") || name.includes("telifon") || name.includes("ko'tarmadi");
     const isComing = name.includes("keladi");
     const isContract = name.includes("shartnoma qiladi");
-    const isRecall = name.includes("hozir vaqtim yo'q") || name.includes("o'ylab ko'radi");
+    const isThinking = name.includes("o'ylab ko'radi");
+    const isRecall = name.includes("hozir vaqtim yo'q") || isThinking;
     const canTransfer = filter?.id === 1 || filter?.id === 2;
+
+    // 🌡️ Issiq/sovuq select faqat shu 3 bosqichda ko'rinadi (backend ham shuni tekshiradi)
+    const showTemperature = isComing || isThinking || isContract;
 
     return (
         <div
@@ -65,6 +70,22 @@ export default function LeadCardItem({
                     <span className="date-badge-empty">⏳ Sana yo‘q</span>
                 )}
             </p>
+
+            {showTemperature && (
+                // draggable karta ustida select bilan ishlashda drag boshlanib ketmasin
+                <div className="lead-temp" draggable onDragStart={(e) => e.stopPropagation()}>
+                    <span className="lead-temp__icon">🌡️</span>
+                    <select
+                        className={`lead-temp__select lead-temp__select--${lead.temperature || "none"}`}
+                        value={lead.temperature || ""}
+                        onChange={(e) => onTemperature?.(lead, e.target.value || null)}
+                    >
+                        <option value="">— tanlang —</option>
+                        <option value="issiq">🔥 Issiq</option>
+                        <option value="sovuq">❄️ Sovuq</option>
+                    </select>
+                </div>
+            )}
 
             <div className="lead-actions">
                 {isPhoneFilter && <p className="call-count">📞 {callCount || 0}/5</p>}

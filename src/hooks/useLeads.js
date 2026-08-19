@@ -62,6 +62,19 @@ export function useLeads() {
         loadAll();
     }, [loadAll]);
 
+    // 🌡️ Issiq/sovuq tanlanganda kartani darhol yangilaymiz (select orqaga sakramasin).
+    // SSE `lead_update` keyin baribir loadAll qiladi — bu shunchaki optimistik ko'rinish.
+    const patchTemperature = useCallback((leadId, temperature) => {
+        setLeads((prev) =>
+            prev.map((group) => ({
+                ...group,
+                leads: (group.leads || []).map((l) =>
+                    l.id === leadId ? { ...l, temperature } : l
+                ),
+            }))
+        );
+    }, []);
+
     // 🔴 Real-time: lead boshqa joyga ko'chsa ro'yxatni yangilaymiz
     useSseEvent("lead_update", () => {
         if (reloadTimer.current) clearTimeout(reloadTimer.current);
@@ -79,5 +92,6 @@ export function useLeads() {
         setCallCounts,
         loading,
         loadAll,
+        patchTemperature,
     };
 }
