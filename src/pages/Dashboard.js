@@ -14,8 +14,10 @@ import {
     updateLead,
     deleteLead,
     logoutUser,
+    setLeadTemperature,
 } from "../api/leadService";
 import { disconnectSse } from "../api/sseClient";
+import { getStoredUser } from "../utils/auth";
 import { useLeads } from "../hooks/useLeads";
 import { toast, errorMessage } from "../utils/toast";
 import CallPopup from "../components/CallPopup";
@@ -77,7 +79,8 @@ function sortByTemperature(list, filterName) {
 
 export default function Dashboard() {
     const navigate = useNavigate();
-    const { filters, leads, contractLeads, trashLeads, callCounts, setCallCounts, loadAll } = useLeads();
+    const { filters, leads, contractLeads, trashLeads, callCounts, setCallCounts, loadAll, patchTemperature } =
+        useLeads();
 
     const [sources, setSources] = useState([]);
     const [draggedLead, setDraggedLead] = useState(null);
@@ -296,6 +299,17 @@ export default function Dashboard() {
         }
     };
 
+    // 🌡️ Issiq/sovuq tanlash — optimistik yangilaymiz, xato bo'lsa qaytaramiz
+    const handleSetTemperature = async (lead, temperature) => {
+        const prev = lead.temperature ?? null;
+        patchTemperature(lead.id, temperature);
+        const res = await setLeadTemperature(lead.id, temperature);
+        if (res?.status === false) {
+            patchTemperature(lead.id, prev);
+            toast.error(res.message || "Haroratni saqlashda xatolik");
+        }
+    };
+
     const handleOpenTransfer = async (lead) => {
         try {
             setUsers(await getUsers());
@@ -360,6 +374,41 @@ export default function Dashboard() {
         }
     };
 
+    // 🗑️ Sifatsiz ro'yxatini ochamiz — operatorlar ro'yxati ham kerak bo'ladi
+    const handleOpenTrash = async () => {
+        setShowTrash(true);
+        try {
+            setUsers(await getUsers());
+        } catch (err) {
+            toast.error(errorMessage(err, "Foydalanuvchilarni olishda xatolik"));
+        }
+    };
+
+    // 📤 Sifatsiz leadni boshqa operatorga YANGI lead bo'lib yuborish.
+    // Avval "Yangi" filterga qaytaramiz (lead bizda ekan), keyin egasini almashtiramiz.
+    const handleSendSifatsizToUser = async (lead, user) => {
+        const yangi = findFilter("yangi");
+        if (!yangi) {
+            toast.error("\"Yangi\" filter topilmadi");
+            return;
+        }
+        try {
+            setSaving(true);
+            const res = await changeFilter(yangi.id, lead.id);
+            if (res?.status === false) {
+                toast.error(res.message || "Leadni yangiga qaytarishda xatolik");
+                return;
+            }
+            await transferLead(lead.id, user.id);
+            toast.success(`📤 Lead ${user.name} ga yangi lead bo‘lib yuborildi`);
+            await loadAll();
+        } catch (err) {
+            toast.error(errorMessage(err, "Leadni yuborishda xatolik"));
+        } finally {
+            setSaving(false);
+        }
+    };
+
     // ↩️ Shartnoma leadni boshqa filterga qaytarish:
     // avval /uncontract (contract=false), so'ng tanlangan filterga o'tkazamiz.
     const handleReassignContract = async (lead, filter) => {
@@ -392,6 +441,10 @@ export default function Dashboard() {
         await logoutUser();
         navigate("/");
     };
+
+    // O'zimizni ro'yxatdan chiqaramiz — o'zimizga yuborishning ma'nosi yo'q
+    const myId = getStoredUser()?.id;
+    const otherUsers = users.filter((u) => u.id !== myId);
 
     const dateConfig = dateModal ? DATE_MODALS[dateModal.kind] : null;
 
@@ -457,6 +510,7 @@ export default function Dashboard() {
                                             onCame={setCameLead}
                                             onDidNotCome={(l) => openDateModal("didNotCome", l)}
                                             onContract={handleContractClick}
+                                            onTemperature={handleSetTemperature}
                                         />
                                     ))}
                                     {list.length === 0 && <p className="empty">Lead yo‘q</p>}
@@ -471,7 +525,7 @@ export default function Dashboard() {
                 className="trash-icon"
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={handleDropToTrash}
-                onClick={() => setShowTrash(true)}
+                onClick={handleOpenTrash}
             >
                 🗑️ <span>Sifatsiz leadlar</span>
             </div>
@@ -551,6 +605,9 @@ export default function Dashboard() {
                     filters={filters.filter((f) => f.name?.toLowerCase() !== "sifatsiz")}
                     emptyText="Hozircha sifatsiz lead yo‘q"
                     actionLabel="↩️ Qaytarish"
+                    transferLabel="📤 Operatorga yuborish"
+                    transferUsers={otherUsers}
+                    onTransfer={handleSendSifatsizToUser}
                     saving={saving}
                     onReassign={handleRestoreSifatsiz}
                     onClose={() => setShowTrash(false)}
