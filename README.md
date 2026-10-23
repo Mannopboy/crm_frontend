@@ -33,13 +33,18 @@ Dev'da `/api` so'rovlari `src/setupProxy.js` orqali `REACT_APP_API_PROXY_TARGET`
 npm run build      # -> build/
 ```
 
-Build backend'ning statik papkasiga (`templates/build` / `frontend/build`) ko'chiriladi va
-`crm.gennis.uz` shu orqali beriladi. Serverga hozir qo'lda chiqariladi (CI yo'q).
-Aniq server yo'li va chiqarish tartibi backend repo / lead tomonida — **bu repoda yo'q**
-(avtomatlashtirish fullstack vazifalarida: «Build'ni backend static'iga ko'chirish tartibi»).
+**Auto-deploy (2026-10-23 dan) — `main` ga `git push` kifoya.** Serverda (`/home/ubuntu/crm_frontend`, git klon)
+cron har daqiqa [`deploy/auto_deploy.sh`](deploy/auto_deploy.sh) ni yuritadi: yangi commit bo'lsa
+`npm ci` → test → `CI=true npm run build` (ogohlantirish ham xato) → `build/` backend'ning
+`/home/ubuntu/crm/frontend/build` papkasiga eski fayllar **ustiga** nusxalanadi (ochiq tab'lar buzilmaydi).
+Build o'tmasa sayt eski holicha qoladi. Serverda Node 18+ bo'lmasa build `node:20-alpine` konteynerida qilinadi.
+
+```bash
+tail -f ~/crm-deploy/frontend.log                          # deploy jurnali
+bash /home/ubuntu/crm_frontend/deploy/auto_deploy.sh --force   # qo'lda qayta deploy
+```
 
 Server kirish ma'lumotlari repoda yo'q.
 
 ## Ma'lum holat
 - `BACKEND_SOROV_*.md` — backend'dan so'ralgan o'zgarishlar (AI operator profili, HTTPS sertifikat, profil/reyting, qo'ng'iroq sana/vaqt, shartnomalar).
-- Avtomatik deploy yo'q.
