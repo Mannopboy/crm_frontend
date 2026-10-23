@@ -1,10 +1,18 @@
-/* 📊 Operator statistikasi — operator (/my-stats) va admin (/admin/operators/:id/stats) uchun umumiy */
+/* 📊 Operator statistikasi — operator (/my-stats) va admin (/admin/operators/:id/stats) uchun umumiy.
+   Har bo'lim o'z rangi (--accent) va o'z ko'rinishiga ega: gradient sarlavha, KPI kartalar,
+   area/bar grafik, voronka, o'lchagich, donut, segmentli chiziq, issiqlik xaritasi, radar. */
 
 .ost {
+    --ink: #0f172a;
+    --muted: #64748b;
+    --soft: #94a3b8;
+    --line: #e2e8f0;
+    --surface: #fff;
+    --surface-2: #f8fafc;
     display: flex;
     flex-direction: column;
     gap: 18px;
-    color: var(--c-text, #0f172a);
+    color: var(--ink);
 }
 
 .ost--loading {
@@ -12,145 +20,563 @@
     transition: opacity 0.2s ease;
 }
 
-.ost-toolbar {
+.ost-empty {
+    margin: 8px 0;
+    font-size: 13px;
+    color: var(--soft);
+}
+
+.ost-subtitle-sm {
+    margin: 18px 0 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ost-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-right: 6px;
+    flex: none;
+}
+
+.ost-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+/* ── Sarlavha (gradient) ─────────────────────────────────────────────── */
+.ost-hero {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
     flex-wrap: wrap;
+    padding: 22px 24px;
+    border-radius: 20px;
+    color: #fff;
+    background: radial-gradient(circle at 85% -20%, rgba(255, 255, 255, 0.25), transparent 45%),
+        linear-gradient(120deg, #4f46e5 0%, #7c3aed 55%, #db2777 100%);
+    box-shadow: 0 18px 40px -22px rgba(79, 70, 229, 0.7);
 }
 
-.ost-title {
+.ost-hero__who {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.ost-hero__avatar {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.ost-hero__name {
     margin: 0;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 800;
 }
 
-.ost-subtitle {
+.ost-hero__meta {
     margin: 4px 0 0;
     font-size: 13px;
-    color: var(--c-muted, #64748b);
+    opacity: 0.85;
 }
 
-.ost-subtitle-sm {
-    margin: 16px 0 8px;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--c-muted, #64748b);
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
+.ost-hero__side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
 }
 
-.ost-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 12px;
-}
-
-.ost-cards--small {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+.ost-hero__ranks {
+    display: flex;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
-.ost-card {
-    background: var(--c-surface, #fff);
-    border: 1px solid var(--c-line, #e2e8f0);
-    border-radius: 14px;
-    padding: 14px 16px;
+.ost-hero__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    font-size: 12px;
+    font-weight: 600;
 }
 
-.ost-cards--small .ost-card {
-    padding: 10px 12px;
-    border-radius: 10px;
+.ost-hero__chip .ost-rank {
+    font-size: 15px;
 }
 
-.ost-card__value {
-    font-size: 24px;
-    font-weight: 800;
-    line-height: 1.1;
+.ost-hero__chip .ost-rank small {
+    color: rgba(255, 255, 255, 0.75);
 }
 
-.ost-cards--small .ost-card__value {
+.ost-hero .period-filter {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.ost-hero .period-filter__btn {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.ost-hero .period-filter__btn.is-active {
+    background: #fff;
+    color: #4f46e5;
+}
+
+.ost-rank {
     font-size: 18px;
 }
 
-.ost-card__label {
-    margin-top: 4px;
+.ost-rank small {
+    font-size: 12px;
+    color: var(--soft);
+}
+
+/* ── KPI kartalar ───────────────────────────────────────────────────── */
+.ost-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
+}
+
+.ost-kpi {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    overflow: hidden;
+}
+
+.ost-kpi::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: var(--accent);
+}
+
+.ost-kpi__icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.ost-kpi__label {
     font-size: 12px;
     font-weight: 600;
-    color: var(--c-muted, #64748b);
+    color: var(--muted);
 }
 
-.ost-card__hint {
+.ost-kpi__value {
     margin-top: 2px;
-    font-size: 11px;
-    color: var(--c-muted, #94a3b8);
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.15;
 }
 
-.ost-card--green .ost-card__value { color: #16a34a; }
-.ost-card--blue .ost-card__value { color: #0284c7; }
-.ost-card--red .ost-card__value { color: #dc2626; }
+.ost-kpi__foot {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+}
 
-.ost-section {
-    background: var(--c-surface, #fff);
-    border: 1px solid var(--c-line, #e2e8f0);
-    border-radius: 16px;
-    padding: 16px 18px;
+.ost-kpi__hint {
+    font-size: 11px;
+    color: var(--soft);
+}
+
+.ost-delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.ost-delta--up { color: #047857; background: #d1fae5; }
+.ost-delta--down { color: #b91c1c; background: #fee2e2; }
+.ost-delta--flat { color: var(--muted); background: #f1f5f9; }
+
+/* ── Panellar va qatorlar ───────────────────────────────────────────── */
+.ost-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.ost-row--wide {
+    grid-template-columns: minmax(0, 2.4fr) minmax(240px, 1fr);
+}
+
+.ost-panel {
+    position: relative;
+    min-width: 0;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.ost-panel__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.ost-panel__icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    color: #fff;
+    background: var(--accent);
+    box-shadow: 0 6px 14px -6px var(--accent);
+}
+
+.ost-panel__titles {
+    flex: 1;
     min-width: 0;
 }
 
-.ost-section__title {
-    margin: 0 0 4px;
+.ost-panel__title {
+    margin: 0;
     font-size: 16px;
     font-weight: 800;
 }
 
-.ost-section__note {
-    margin: 0 0 12px;
+.ost-panel__note {
+    margin: 2px 0 0;
     font-size: 12px;
-    color: var(--c-muted, #94a3b8);
+    color: var(--soft);
 }
 
-.ost-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-    gap: 18px;
+.ost-panel__aside {
+    flex: none;
+}
+
+.ost-panel--warm {
+    background: linear-gradient(160deg, #fffbeb 0%, #fff 60%);
+    border-color: #fde68a;
+}
+
+.ost-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #4338ca;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.ost-badge--good {
+    margin-left: 8px;
+    padding: 1px 8px;
+    background: #d1fae5;
+    color: #047857;
+    font-size: 10px;
+}
+
+.ost-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    font-weight: 700;
 }
 
 .ost-chart {
     width: 100%;
-    min-height: 260px;
+    min-height: 280px;
 }
 
-.ost-empty {
-    margin: 8px 0;
-    font-size: 13px;
-    color: var(--c-muted, #94a3b8);
+/* ── Rekordlar ───────────────────────────────────────────────────────── */
+.ost-records {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
 }
 
-.ost-barlist {
+.ost-records li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px dashed #fcd34d;
+}
+
+.ost-records span {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.ost-records strong {
+    grid-row: span 2;
+    align-self: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: #b45309;
+}
+
+.ost-records small {
+    font-size: 11px;
+    color: var(--soft);
+}
+
+/* ── Voronka ─────────────────────────────────────────────────────────── */
+.ost-funnel {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 2px;
 }
 
-.ost-barlist__row {
+.ost-funnel__row {
     display: grid;
-    grid-template-columns: minmax(110px, 1.2fr) 2fr auto;
+    grid-template-columns: minmax(0, 1fr) 150px;
     align-items: center;
+    gap: 12px;
+}
+
+.ost-funnel__bar {
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    border-radius: 10px;
+    color: #fff;
+    transition: width 0.4s ease;
+}
+
+.ost-funnel__count {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.ost-funnel__label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.ost-funnel__label small {
+    margin-left: 4px;
+    color: var(--soft);
+    font-weight: 500;
+}
+
+.ost-funnel__step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: calc(100% - 162px);
+    font-size: 11px;
+    color: var(--soft);
+}
+
+/* ── O'lchagich va javob tezligi ─────────────────────────────────────── */
+.ost-gauge {
+    position: relative;
+}
+
+.ost-gauge__center {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 14px;
+    text-align: center;
+}
+
+.ost-gauge__value {
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.ost-gauge__sub {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.ost-speed {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 16px;
+}
+
+.ost-speed__facts {
+    display: grid;
+    gap: 8px;
+}
+
+.ost-speed__facts > div {
+    display: flex;
+    justify-content: space-between;
     gap: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #f0f9ff;
     font-size: 13px;
 }
 
-.ost-barlist__name {
-    overflow: hidden;
-    text-overflow: ellipsis;
+.ost-speed__facts span {
+    color: var(--muted);
+}
+
+.ost-speed__facts .is-alert {
+    background: #fff1f2;
+    color: #be123c;
+}
+
+/* ── Lead manbalari (donut + jadval) ─────────────────────────────────── */
+.ost-sources {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 20px;
+    align-items: center;
+}
+
+.ost-donut {
+    position: relative;
+}
+
+.ost-donut__center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.ost-donut--small .ost-donut__center {
+    height: 160px;
+}
+
+.ost-donut__center strong {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.ost-donut__center span {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.ost-donut__caption {
+    margin: 6px 0 0;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.ost-table-wrap {
+    overflow-x: auto;
+}
+
+.ost-table {
+    width: 100%;
+    min-width: 620px;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.ost-table th {
+    padding: 8px 10px;
+    text-align: right;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid var(--line);
+}
+
+.ost-table td {
+    padding: 9px 10px;
+    text-align: right;
+    border-bottom: 1px dashed var(--line);
+    font-variant-numeric: tabular-nums;
+}
+
+.ost-table th:first-child,
+.ost-table td:first-child {
+    text-align: left;
+}
+
+.ost-table tbody tr:hover {
+    background: var(--surface-2);
+}
+
+.ost-table__name {
+    font-weight: 700;
     white-space: nowrap;
+}
+
+.ost-table__share {
+    display: grid;
+    grid-template-columns: 1fr auto 40px;
+    align-items: center;
+    gap: 8px;
+    min-width: 160px;
+}
+
+.ost-table__share small {
+    color: var(--soft);
 }
 
 .ost-barlist__bar {
     height: 8px;
-    background: var(--c-surface-2, #f1f5f9);
+    background: #f1f5f9;
     border-radius: 999px;
     overflow: hidden;
 }
@@ -162,70 +588,384 @@
     border-radius: 999px;
 }
 
-.ost-barlist__count {
-    font-weight: 700;
-    text-align: right;
-    white-space: nowrap;
+.ost-table__green { color: #059669; font-weight: 700; }
+.ost-table__blue { color: #0284c7; font-weight: 700; }
+.ost-table__red { color: #e11d48; }
+
+.ost-table__row--empty td {
+    color: var(--soft);
+    font-weight: 400;
 }
 
-.ost-barlist__count small {
-    font-weight: 500;
-    color: var(--c-muted, #94a3b8);
+.ost-table tfoot td {
+    font-weight: 800;
+    border-bottom: none;
+    border-top: 2px solid var(--line);
 }
 
-.ost-rank {
-    font-size: 20px;
-}
-
-.ost-rank small {
-    font-size: 12px;
-    color: var(--c-muted, #94a3b8);
-}
-
-.ost-rank--none {
-    color: var(--c-muted, #94a3b8);
-}
-
-.ost-ai {
+/* ── Joriy holat: mini raqamlar, segmentli chiziq, harorat ───────────── */
+.ost-minis {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
 }
 
-.ost-ai__score {
+.ost-minis--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ost-minis > div {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    font-size: 13px;
-    color: var(--c-muted, #64748b);
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--surface-2);
 }
 
-.ost-ai__big {
-    align-self: flex-start;
-    padding: 6px 16px;
-    border-radius: 14px;
-    color: #fff;
-    font-size: 32px;
+.ost-minis strong {
+    font-size: 20px;
     font-weight: 800;
 }
 
-.ost-ai__criteria {
+.ost-minis span {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.ost-minis .is-green strong { color: #059669; }
+.ost-minis .is-blue strong { color: #0284c7; }
+
+.ost-stack__bar {
+    display: flex;
+    height: 16px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: #f1f5f9;
+}
+
+.ost-stack__bar > span {
+    height: 100%;
+    border-right: 2px solid #fff;
+}
+
+.ost-stack__bar > span:last-child {
+    border-right: none;
+}
+
+.ost-stack__legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 6px 14px;
+    margin-top: 10px;
+}
+
+.ost-stack__item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+}
+
+.ost-stack__item.is-empty {
+    opacity: 0.45;
+}
+
+.ost-stack__name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ost-stack__item small {
+    width: 34px;
+    text-align: right;
+    color: var(--soft);
+}
+
+.ost-temp {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.ost-temp__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) 12%, #fff);
+    font-size: 12px;
+}
+
+.ost-temp__item strong {
+    font-size: 18px;
+    color: var(--ink);
+}
+
+.ost-temp__item span {
+    color: var(--muted);
+}
+
+/* ── Eslatmalar (ogohlantirish kartalari) ────────────────────────────── */
+.ost-alerts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.ost-alert {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 10px;
+    align-items: center;
+    padding: 14px;
+    border-radius: 14px;
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+.ost-alert svg {
+    grid-row: span 2;
+}
+
+.ost-alert strong {
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.ost-alert span {
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+.ost-alert--red { background: #fff1f2; color: #be123c; }
+.ost-alert--amber { background: #fffbeb; color: #b45309; }
+.ost-alert--slate { background: #f1f5f9; color: #475569; }
+
+/* ── Faollik xaritasi ────────────────────────────────────────────────── */
+.ost-heat {
+    overflow-x: auto;
+}
+
+.ost-heat__grid {
+    display: grid;
+    grid-template-columns: 26px repeat(24, minmax(16px, 1fr));
+    gap: 3px;
+    min-width: 520px;
+}
+
+.ost-heat__hour {
+    font-size: 10px;
+    color: var(--soft);
+    text-align: left;
+}
+
+.ost-heat__day {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    align-self: center;
+}
+
+.ost-heat__cell {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    background: #f1f5f9;
+}
+
+.ost-heat__scale {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--soft);
+}
+
+.ost-heat__ramp {
+    width: 90px;
+    height: 8px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 1));
+}
+
+/* ── Qo'ng'iroqlar ───────────────────────────────────────────────────── */
+.ost-calls__crm {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.ost-calls__crm > div {
     display: flex;
     flex-direction: column;
+    padding: 10px;
+    border-radius: 12px;
+    background: #f0f9ff;
+}
+
+.ost-calls__crm strong {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0369a1;
+}
+
+.ost-calls__crm span {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.ost-calls__ats {
+    display: grid;
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+}
+
+.ost-facts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+    font-size: 13px;
+}
+
+.ost-facts li {
+    display: flex;
+    align-items: center;
     gap: 6px;
 }
 
-.ost-ai__tags {
+.ost-facts li strong {
+    margin-left: auto;
+}
+
+.ost-facts__sep {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed var(--line);
+}
+
+/* ── Jamoa bilan solishtirish ────────────────────────────────────────── */
+.ost-compare {
+    display: grid;
+    gap: 14px;
+}
+
+.ost-compare__label {
+    margin-bottom: 4px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.ost-compare__line {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 80px;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.ost-compare__line + .ost-compare__line {
+    margin-top: 3px;
+}
+
+.ost-compare__who {
+    color: var(--muted);
+}
+
+.ost-compare__line > :last-child {
+    text-align: right;
+}
+
+.ost-compare__track {
+    position: relative;
+    height: 10px;
+    border-radius: 999px;
+    background: #f1f5f9;
+}
+
+.ost-compare__me,
+.ost-compare__team {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: 999px;
+}
+
+.ost-compare__me { background: linear-gradient(90deg, #14b8a6, #6366f1); }
+.ost-compare__team { background: #cbd5e1; }
+
+.ost-compare__best {
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    width: 2px;
+    margin-left: -1px;
+    background: #f59e0b;
+}
+
+/* ── Faoliyat ────────────────────────────────────────────────────────── */
+.ost-chips {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    align-content: flex-start;
+}
+
+.ost-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 6px 6px 12px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    font-size: 12px;
+}
+
+.ost-chip b {
+    min-width: 22px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: #334155;
+    color: #fff;
+    text-align: center;
+}
+
+/* ── AI ──────────────────────────────────────────────────────────────── */
+.ost-ai {
+    display: grid;
+    grid-template-columns: minmax(170px, 0.8fr) minmax(0, 1.2fr);
+    gap: 12px;
+    align-items: center;
+}
+
+.ost-ai__rank {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.ost-ai__tags {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
 }
 
 .ost-tag {
     padding: 4px 10px;
     border-radius: 999px;
-    background: var(--c-surface-2, #f1f5f9);
+    background: #f5f3ff;
+    color: #5b21b6;
     font-size: 12px;
     font-weight: 600;
 }
@@ -234,38 +974,58 @@
     grid-column: 1 / -1;
 }
 
-.ost-ai__row {
+.ost-ai__pills {
     display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.ost-ai__recent-item {
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 4px 0;
-    font-size: 13px;
-    border-bottom: 1px dashed var(--c-line, #e2e8f0);
+    gap: 6px;
+    padding: 4px 10px 4px 4px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    font-size: 12px;
+}
+
+.ost-ai__recent-item small {
+    color: var(--soft);
 }
 
 .ost-ai__pill {
-    min-width: 36px;
+    min-width: 30px;
     padding: 2px 8px;
-    border-radius: 8px;
+    border-radius: 999px;
     color: #fff;
     font-weight: 700;
     text-align: center;
 }
 
-.ost-ai__date {
-    margin-left: auto;
-    color: var(--c-muted, #94a3b8);
-}
-
-/* Operator sahifasi (/my-stats) — admin layout'isiz */
+/* ── Operator sahifasi (/my-stats) — admin layout'isiz ───────────────── */
 .my-stats-page {
     min-height: 100vh;
     padding: 20px;
-    background: var(--c-bg, #f8fafc);
+    background: #f5f7fb;
 }
 
 .my-stats-page__back {
     margin-bottom: 16px;
+}
+
+@media (max-width: 1000px) {
+    .ost-row,
+    .ost-row--wide,
+    .ost-sources,
+    .ost-speed,
+    .ost-ai {
+        grid-template-columns: 1fr;
+    }
+
+    .ost-hero__side {
+        align-items: flex-start;
+    }
 }
 
 @media (max-width: 640px) {
@@ -273,11 +1033,54 @@
         padding: 12px;
     }
 
-    .ost-grid {
+    .ost-hero {
+        padding: 18px;
+    }
+
+    .ost-hero__name {
+        font-size: 21px;
+    }
+
+    .ost-kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .ost-kpi {
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px;
+    }
+
+    .ost-kpi__icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .ost-kpi__value {
+        font-size: 22px;
+    }
+
+    .ost-panel {
+        padding: 14px;
+    }
+
+    .ost-minis,
+    .ost-calls__crm,
+    .ost-temp {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ost-calls__ats,
+    .ost-alerts {
         grid-template-columns: 1fr;
     }
 
-    .ost-barlist__row {
-        grid-template-columns: minmax(90px, 1fr) 1fr auto;
+    .ost-funnel__row {
+        grid-template-columns: minmax(0, 1fr) 110px;
+    }
+
+    .ost-funnel__step {
+        width: calc(100% - 122px);
     }
 }
