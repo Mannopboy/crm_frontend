@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAdminOperators } from "../../../api/leadService";
 import PeriodFilter from "./PeriodFilter";
 import ExportButton from "../../../components/ExportButton";
@@ -17,6 +18,7 @@ export default function OperatorsKPI() {
     const [period, setPeriod] = useState("month");
     const [operators, setOperators] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         let cancelled = false;
@@ -66,7 +68,16 @@ export default function OperatorsKPI() {
                             <tbody>
                             {operators.map((op) => (
                                 <tr key={op.id}>
-                                    <td className={styles.managerName}>{op.name}</td>
+                                    <td className={styles.managerName}>
+                                        <button
+                                            type="button"
+                                            className="ost-link"
+                                            title="To'liq statistika"
+                                            onClick={() => navigate(`/admin/operators/${op.id}/stats`)}
+                                        >
+                                            📊 {op.name}
+                                        </button>
+                                    </td>
                                     <td>{op.total_leads}</td>
                                     <td>{op.contracts}</td>
                                     <td>{op.came}</td>

@@ -453,3 +453,19 @@
     border-radius: 8px;
     padding: 6px 10px;
 }
+
+/* Operatorlar KPI — operator nomi to'liq statistikaga havola */
+.ost-link {
+    border: none;
+    background: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+}
+
+.ost-link:hover {
+    color: #4f46e5;
+    text-decoration: underline;
+}

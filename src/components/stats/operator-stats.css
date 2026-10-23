@@ -1,0 +1,283 @@
+/* 📊 Operator statistikasi — operator (/my-stats) va admin (/admin/operators/:id/stats) uchun umumiy */
+
+.ost {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    color: var(--c-text, #0f172a);
+}
+
+.ost--loading {
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.ost-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.ost-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.ost-subtitle {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--c-muted, #64748b);
+}
+
+.ost-subtitle-sm {
+    margin: 16px 0 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-muted, #64748b);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.ost-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.ost-cards--small {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+}
+
+.ost-card {
+    background: var(--c-surface, #fff);
+    border: 1px solid var(--c-line, #e2e8f0);
+    border-radius: 14px;
+    padding: 14px 16px;
+}
+
+.ost-cards--small .ost-card {
+    padding: 10px 12px;
+    border-radius: 10px;
+}
+
+.ost-card__value {
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.ost-cards--small .ost-card__value {
+    font-size: 18px;
+}
+
+.ost-card__label {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--c-muted, #64748b);
+}
+
+.ost-card__hint {
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--c-muted, #94a3b8);
+}
+
+.ost-card--green .ost-card__value { color: #16a34a; }
+.ost-card--blue .ost-card__value { color: #0284c7; }
+.ost-card--red .ost-card__value { color: #dc2626; }
+
+.ost-section {
+    background: var(--c-surface, #fff);
+    border: 1px solid var(--c-line, #e2e8f0);
+    border-radius: 16px;
+    padding: 16px 18px;
+    min-width: 0;
+}
+
+.ost-section__title {
+    margin: 0 0 4px;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.ost-section__note {
+    margin: 0 0 12px;
+    font-size: 12px;
+    color: var(--c-muted, #94a3b8);
+}
+
+.ost-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 18px;
+}
+
+.ost-chart {
+    width: 100%;
+    min-height: 260px;
+}
+
+.ost-empty {
+    margin: 8px 0;
+    font-size: 13px;
+    color: var(--c-muted, #94a3b8);
+}
+
+.ost-barlist {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ost-barlist__row {
+    display: grid;
+    grid-template-columns: minmax(110px, 1.2fr) 2fr auto;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+}
+
+.ost-barlist__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ost-barlist__bar {
+    height: 8px;
+    background: var(--c-surface-2, #f1f5f9);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.ost-barlist__bar > span {
+    display: block;
+    height: 100%;
+    background: #6366f1;
+    border-radius: 999px;
+}
+
+.ost-barlist__count {
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.ost-barlist__count small {
+    font-weight: 500;
+    color: var(--c-muted, #94a3b8);
+}
+
+.ost-rank {
+    font-size: 20px;
+}
+
+.ost-rank small {
+    font-size: 12px;
+    color: var(--c-muted, #94a3b8);
+}
+
+.ost-rank--none {
+    color: var(--c-muted, #94a3b8);
+}
+
+.ost-ai {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.ost-ai__score {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--c-muted, #64748b);
+}
+
+.ost-ai__big {
+    align-self: flex-start;
+    padding: 6px 16px;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.ost-ai__criteria {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ost-ai__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-content: flex-start;
+}
+
+.ost-tag {
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--c-surface-2, #f1f5f9);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ost-ai__recent {
+    grid-column: 1 / -1;
+}
+
+.ost-ai__row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    font-size: 13px;
+    border-bottom: 1px dashed var(--c-line, #e2e8f0);
+}
+
+.ost-ai__pill {
+    min-width: 36px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+}
+
+.ost-ai__date {
+    margin-left: auto;
+    color: var(--c-muted, #94a3b8);
+}
+
+/* Operator sahifasi (/my-stats) — admin layout'isiz */
+.my-stats-page {
+    min-height: 100vh;
+    padding: 20px;
+    background: var(--c-bg, #f8fafc);
+}
+
+.my-stats-page__back {
+    margin-bottom: 16px;
+}
+
+@media (max-width: 640px) {
+    .my-stats-page {
+        padding: 12px;
+    }
+
+    .ost-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ost-barlist__row {
+        grid-template-columns: minmax(90px, 1fr) 1fr auto;
+    }
+}

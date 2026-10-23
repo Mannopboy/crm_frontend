@@ -29,6 +29,8 @@ import ImportLeads from "./pages/adminDashboard/components/ImportLeads"
 import AiAnalytics from "./pages/adminDashboard/components/AiAnalytics"
 import LeadTemperature from "./pages/adminDashboard/components/LeadTemperature"
 import BadLeads from "./pages/adminDashboard/components/BadLeads"
+import OperatorStatsAdmin from "./pages/adminDashboard/components/OperatorStatsAdmin"
+import MyStats from "./pages/MyStats";
 import ToastHost from "./components/ToastHost";
 import { connectSse, disconnectSse } from "./api/sseClient";
 import { isAdmin, isAuthenticated } from "./utils/auth";
@@ -90,6 +92,16 @@ export default function App() {
                     }
                 />
 
+                {/* 📊 Operatorning o'z to'liq statistikasi */}
+                <Route
+                    path="/my-stats"
+                    element={
+                        <PrivateRoute role="operator">
+                            <MyStats />
+                        </PrivateRoute>
+                    }
+                />
+
                 {/* ADMIN ROUTES */}
                 <Route
                     path="/admin"
@@ -105,6 +117,7 @@ export default function App() {
                     <Route path="contracts" element={<ContractsByOperator />} />
                     <Route path="filters" element={<FiltersPage />} />
                     <Route path="operators" element={<OperatorsKPI />} />
+                    <Route path="operators/:userId/stats" element={<OperatorStatsAdmin />} />
                     <Route path="sources" element={<SourcesAnalytics />} />
                     <Route path="call-analytics" element={<CallsAnalytics />} />
                     <Route path="funnel" element={<Funnel />} />

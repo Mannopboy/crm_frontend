@@ -465,6 +465,9 @@ export default function Dashboard() {
                     <button className="contract-btn" onClick={() => setShowLeaderboard(true)}>
                         🏆 Reyting
                     </button>
+                    <button className="contract-btn" onClick={() => navigate("/my-stats")}>
+                        📊 Statistikam
+                    </button>
                     <button className="contract-btn" onClick={() => setShowProfile(true)}>
                         👤 Profil
                     </button>
