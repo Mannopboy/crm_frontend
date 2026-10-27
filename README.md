@@ -38,6 +38,8 @@ cron har daqiqa [`deploy/auto_deploy.sh`](deploy/auto_deploy.sh) ni yuritadi: ya
 `npm ci` → test → `CI=true npm run build` (ogohlantirish ham xato) → `build/` backend'ning
 `/home/ubuntu/crm/frontend/build` papkasiga eski fayllar **ustiga** nusxalanadi (ochiq tab'lar buzilmaydi).
 Build o'tmasa sayt eski holicha qoladi. Serverda Node 18+ bo'lmasa build `node:20-alpine` konteynerida qilinadi.
+Disk: build'dan keyin `node_modules` o'chiriladi (~450 MB; `npm ci` baribir noldan o'rnatadi), 30 kundan eski
+hash'li fayllar tozalanadi. Source map'lar prod'ga chiqmaydi (`.env.production` → `GENERATE_SOURCEMAP=false`).
 
 ```bash
 tail -f ~/crm-deploy/frontend.log                          # deploy jurnali

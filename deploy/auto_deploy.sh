@@ -50,6 +50,8 @@ main() {
             sh -c "$BUILD_CMD" > /tmp/crm-frontend-build.log 2>&1
     fi
     status=$?
+    # `npm ci` har build'da node_modules'ni noldan o'rnatadi — saqlab turish ~450 MB disk
+    rm -rf node_modules
 
     if [ $status -ne 0 ] || [ ! -f build/index.html ]; then
         tail -30 /tmp/crm-frontend-build.log
@@ -62,6 +64,8 @@ main() {
     cp -r build/. "$TARGET_DIR"/
     # 30 kundan eski hash'li fayllarni tozalash (yangilari va index.html qoladi)
     find "$TARGET_DIR/static" -type f -mtime +30 -delete 2>/dev/null || true
+    # Source map'lar endi yaratilmaydi (.env.production) — eskilari ham ochiq turmasin
+    find "$TARGET_DIR/static" -type f -name '*.map' -delete 2>/dev/null || true
 
     echo "$target" > "$MARKER"
     rm -f "$FAILED"
