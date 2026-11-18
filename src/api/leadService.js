@@ -342,14 +342,16 @@ export async function getAdminOperators(period = "all") {
     }
 }
 
-// 7.2. Manba bo‘yicha tahlil
-export async function getAdminSources(period = "all") {
+// 7.2. Manba bo‘yicha tahlil. systemId: filial (tizim) id, "none" — filialsiz, "" — hammasi
+export async function getAdminSources(period = "all", systemId = "") {
     try {
-        const res = await api.get("/admin/sources", { params: { period } });
-        return res.data; // { status, period, sources: [...], no_source_leads }
+        const params = { period };
+        if (systemId) params.system_id = systemId;
+        const res = await api.get("/admin/sources", { params });
+        return res.data; // { status, period, sources: [...], no_source_leads, systems: [...], by_system: [...] }
     } catch (error) {
         console.error("❌ getAdminSources xato:", error.response?.data || error.message);
-        return { status: false, sources: [], no_source_leads: 0 };
+        return { status: false, sources: [], no_source_leads: 0, systems: [], by_system: [] };
     }
 }
 

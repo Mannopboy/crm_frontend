@@ -469,3 +469,48 @@
     color: #4f46e5;
     text-decoration: underline;
 }
+
+/* ──────── Manba tahlili: filial tanlash va filial × manba jadvali ──────── */
+.analytics-select {
+    min-width: 190px;
+    padding: 9px 12px;
+    border: 1.5px solid var(--c-line, #e2e8f0);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: var(--c-surface, #fff);
+    color: var(--c-ink, #0f172a);
+}
+
+.filial-table__title {
+    padding: 20px 24px 0;
+}
+
+.filial-table__scroll {
+    overflow-x: auto;
+}
+
+.filial-table__link {
+    border: none;
+    background: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+}
+
+.filial-table__link:hover {
+    color: #6366f1;
+    text-decoration: underline;
+}
+
+.filial-table__zero {
+    color: var(--c-muted, #94a3b8);
+}
+
+.filial-table__sub {
+    display: block;
+    font-size: 11.5px;
+    color: #16a34a;
+}
